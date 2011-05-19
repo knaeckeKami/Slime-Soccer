@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package slimesoccer;
 
 /**
@@ -12,17 +8,25 @@ public class Vector2D {
 
     private double x, y; //X is ume, Y is aufe
 
+    public Vector2D() {
+        this(0, 0);
+    }
+
+    public Vector2D(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public void add(Vector2D v2) {
         this.x += v2.x;
         this.y += v2.y;
     }
 
-    public double length(){
-        return Math.sqrt(x*x+y*y);
+    public double length() {
+        return Math.sqrt(x * x + y * y);
     }
 
-    public void einheitsVector(){
-        
+    public void einheitsVector() {
     }
 
     public void changeXDir() {

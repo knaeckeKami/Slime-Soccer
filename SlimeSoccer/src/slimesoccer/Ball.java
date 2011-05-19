@@ -1,19 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package slimesoccer;
-
-import java.awt.Panel;
-import javax.swing.JPanel;
 
 /**
  *
  * @author edvo
  */
-public class Ball extends JPanel{
+public class Ball extends MoveAble {
 
+    private float radius;
 
+    public Ball(float radius) {
+        this(0, 0, radius);
+    }
 
+    public Ball(int x, int y, float radius) {
+        super(x, y);
+        this.radius = radius > 0 ? radius : 1;
+    }
 }
