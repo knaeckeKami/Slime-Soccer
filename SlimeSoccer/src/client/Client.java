@@ -1,7 +1,7 @@
 package client;
 
 import javax.swing.JFrame;
-
+import slimesoccer.Board;
 
 /**
  *
@@ -16,6 +16,7 @@ public class Client extends JFrame {
     private void initComponents() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().add(new Board());
+        this.setSize(500, 400);
     }
     
     public static void main(String... args) {
