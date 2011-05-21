@@ -1,4 +1,4 @@
-package slimesoccer;
+package client;
 
 /**
  *
@@ -8,112 +8,147 @@ public class Vector2D {
 
     private double x, y; //X is ume, Y is aufe
 
-
     /**
-     * Addiert den übergebenen Vektor.
-     * @param v2 
+     * Erzeugt einen neuen Vektor mit x und y auf 0.
      */
-      public void add(Vector2D v2) {
-        this.x += v2.x;
-        this.y += v2.y;
+    public Vector2D() {
     }
 
+    /**
+     * Erzeugt einen neuen Vektor aus dem übergebenen (Kopie)
+     * @param anotherVector Vektor der kopiert werden soll
+     */
+    public Vector2D(Vector2D anotherVector) {
+        this.x = anotherVector.x;
+        this.y = anotherVector.y;
+    }
 
-    public Vector2D(int x, int y) {
+    /**
+     * Erzeugt einen neuen Vektor mit den Werten x und y
+     * @param x x-Wert des Vektors
+     * @param y y-Wert des Vektors
+     */
+    public Vector2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-
-  
-
+    /**
+     * Addiert den übergebenen Vektor.
+     * @param v2 Vektor der addiert werden soll
+     */
+    public void add(Vector2D v2) {
+        this.x += v2.x;
+        this.y += v2.y;
+    }
 
     /**
      * Subtrahiert den übergeben Vektor.
-     * @param v2 
+     * @param v2 Vektor der subtrahiert werden soll
      */
     public void subtract(Vector2D v2) {
         this.x -= v2.x;
         this.y -= v2.y;
 
     }
-    
+
     /**
      * Liefert die Länge des Vektors.
-     * @return 
+     * @return Länge des Vektors
      */
     public double length() {
         return Math.sqrt(x * x + y * y);
     }
+
     /**
      * Liefert die quadratische Länge des Vektors (aus Performancegründen da sqrt langsam ist)
-     * @return 
+     * @return Quadrierte Länge des Vektors
      */
     public double squarelength() {
         return (x * x + y * y);
     }
-    
+
     /**
      * Setzt den Vector auf seinen Einheitsvektor. 
      * 
      * @return Eineheitsvektor (this) 
      */
     public Vector2D einheitsVector() {
-        double l=this.length();
-        this.x/=l;
-        this.y/=l;
+        double l = this.length();
+        this.x /= l;
+        this.y /= l;
         //Länge muss 1 sein
-        assert(Math.abs(this.length()-1)<1E-5);
+        assert (Math.abs(this.length() - 1) < 1E-5);
         return this;
-        
+
     }
 
+    /**
+     * Negiert den x-Wert des Vektors
+     * x = -x
+     */
     public void changeXDir() {
-        x = -x;
+        this.x = -this.x;
     }
 
+    /**
+     * Negiert den y-Wert des Vektors
+     * y = -y
+     */
     public void changeYDir() {
-        y = -y;
+        this.y = -this.y;
     }
 
+    /**
+     * Liefert den x-Wert des Vektors
+     * @return x-Wert
+     */
     public double getX() {
         return x;
     }
 
+    /**
+     * Liefert den y-Wert des Vektors
+     * @return y-Wert
+     */
     public double getY() {
         return y;
     }
 
+    /**
+     * Setzt den x-Wert des Vektors
+     * @param x neuer x-Wert
+     */
     public void setX(double x) {
         this.x = x;
     }
 
+    /**
+     * Setzt den y-Wert des Vektors
+     * @param y neuer y-Wert
+     */
     public void setY(double y) {
         this.y = y;
     }
-
-    public Vector2D(double x, double y) {
+    
+    /**
+     * Setzt x- und y-Wert des Vektors
+     * @param x neuer x-Wert
+     * @param y neuer y-Wert
+     */
+    public void setXY(double x, double y) {
         this.x = x;
         this.y = y;
     }
+
     /**
-     * Erzeugt einen neuen Vektor mit x und y auf 0.
+     * Stringdarstellung des Vektorobjektes
+     * Format:
+     *  X: x-Wert, Y: y-Wert, Länge: ...
+     * @return String in der oben beschriebenen Darstellung
      */
-    public Vector2D(){
-        
-    }
-    /**
-     * Erzeugt einen neuen Vector, der eine Kopie des übergebenen ist.
-     * @param anotherVector 
-     */
-    public Vector2D(Vector2D anotherVector) {
-        this.x = anotherVector.x;
-        this.y = anotherVector.y;
-    }
-    
     @Override
-    public String toString(){
-        return String.format("X: %.3f, Y: %.3f, Länge: %.3f", x,y,length());
+    public String toString() {
+        return String.format("X: %.3f, Y: %.3f, Länge: %.3f", x, y, length());
     }
-            
 }

@@ -1,4 +1,4 @@
-package slimesoccer;
+package client;
 
 import javax.swing.JPanel;
 

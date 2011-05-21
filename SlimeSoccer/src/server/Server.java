@@ -3,12 +3,12 @@
  * and open the template in the editor.
  */
 
-package client;
+package server;
 
 /**
  *
  * @author edvo
  */
-public class Slime {
+public class Server {
 
 }
