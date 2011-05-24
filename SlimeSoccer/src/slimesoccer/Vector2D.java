@@ -90,6 +90,15 @@ public class Vector2D {
     public void changeXDir() {
         this.x = -this.x;
     }
+    
+    /**
+     * Kürzt den Vektor um den Faktor factor (für Reibung oda so)
+     * @param factor 
+     */
+    public void shorten(double factor){
+        this.x *= factor;
+        this.y *= factor;
+    }
 
     /**
      * Negiert den y-Wert des Vektors

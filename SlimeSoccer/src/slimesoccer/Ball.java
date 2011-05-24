@@ -28,4 +28,6 @@ public class Ball extends MoveAble {
         super(x, y);
         this.radius = radius > 0 ? radius : 1;
     }
+    
+   
 }

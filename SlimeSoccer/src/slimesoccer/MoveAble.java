@@ -86,4 +86,12 @@ public abstract class MoveAble {
     public void setYCoord(int y) {
         this.y = y;
     }
+    /**
+     * Addiert den Vektor zur aktuellen Position.
+     * Verändert den Vektor nicht.
+     */
+    public void update(){
+        this.x+=vector.getX();
+        this.y+=vector.getY();
+    }
 }

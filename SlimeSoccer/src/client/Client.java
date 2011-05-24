@@ -19,6 +19,7 @@ public class Client extends JFrame {
     private Socket server;
 
     public Client() {
+        super("SlimeSoccer!!");
         this.initComponents();
 
         this.serverIP = JOptionPane.showInputDialog(this.getRootPane(), "Please enter Server IP: ", "localhost");
@@ -48,6 +49,7 @@ public class Client extends JFrame {
             public void run() {
                 Client client = new Client();
                 client.setVisible(true);
+                
             }
         });
     }
