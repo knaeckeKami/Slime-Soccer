@@ -41,13 +41,15 @@ public class Client extends JFrame {
         } catch (IOException ex) {
             System.err.println(ex);
         }
+
+
     }
 
     private void initComponents() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().add(new Board());
+        this.getContentPane().add(new Board(Client.BOARD_WIDTH,Client.BOARD_HEIGHT,this.server));
         this.setSize(600, 600);
-        this.board=new Board(Client.BOARD_WIDTH,Client.BOARD_HEIGHT);
+    
 
 
     }

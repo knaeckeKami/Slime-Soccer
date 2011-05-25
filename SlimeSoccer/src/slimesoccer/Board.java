@@ -17,7 +17,9 @@ import javax.swing.JPanel;
 public class Board extends JPanel {
 
 
+
     public static final int FLOOR = 480;
+
     private Ball ball;
     private Goal leftGoal;
     private Goal rightGoal;
@@ -30,7 +32,11 @@ public class Board extends JPanel {
     public Board() {
         this(600, 400);
     }
-
+    /**
+     * @deprecated kein server!
+     * @param width
+     * @param height
+     */
     public Board(int width, int height) {
         super(true);    // enable double buffering
         this.setSize(width, height);
@@ -49,35 +55,27 @@ public class Board extends JPanel {
         });
     }
 
-       public Board(int width, int height, Socket server) {
+    public Board(int width, int height, Socket server) {
         super(true);    // enable double buffering
         this.setSize(width, height);
-        this.server=server;
-        this.player=new Slime();
-        this.enemy= new Slime();
-        this.ball=  new Ball(Ball.STANDARD_RADIUS);
+        this.server = server;
+        this.player = new Slime();
+        this.enemy = new Slime();
+        this.ball = new Ball(Ball.STANDARD_RADIUS);
         try {
             this.din = new DataInputStream(server.getInputStream());
-            this.dout= new DataOutputStream(server.getOutputStream());
+            this.dout = new DataOutputStream(server.getOutputStream());
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
 
-        this.addKeyListener(new KeyAdapter() {
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.)
-            }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
-            }
-        });
     }
 
-    public void paint(Graphics g){
+
+
+    public void paint(Graphics g) {
         super.paint(g);
         enemy.draw(g);
         player.draw(g);

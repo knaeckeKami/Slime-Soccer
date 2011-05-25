@@ -22,7 +22,7 @@ public interface Constants {
      */
     public static final char TYPE_COORDS = 'c';
     /**
-     * k gefolgt von byte
+     * k gefolgt von
      *  KeyEvent.VK_UP, KeyEvent.VK_LEFT, KeyEvent.VK_RIGHT
      * sowie boolean (true=pressed, false=released)
      */
