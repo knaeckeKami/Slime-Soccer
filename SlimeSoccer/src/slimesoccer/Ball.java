@@ -1,12 +1,18 @@
 package slimesoccer;
 
+import java.awt.Color;
+import java.awt.Graphics;
+
 /**
  *
  * @author edvo
  */
 public class Ball extends MoveAble {
 
+    public static final float STANDARD_RADIUS = 25;
+
     private float radius;
+    private Color color;
 
     /**
      * Erzeugt einen neuen Ball, der auf (0/0) platziert ist und keine Bewegung
@@ -28,6 +34,15 @@ public class Ball extends MoveAble {
         super(x, y);
         this.radius = radius > 0 ? radius : 1;
     }
-    
-   
+
+    public Ball(int x, int y, float radius, Color color) {
+        super(x, y);
+        this.radius = radius > 0 ? radius : 1;
+        this.color = color == null ? Color.RED : color;
+    }
+
+    public void draw(Graphics g) {
+        g.setColor(color);
+        g.fillArc(x, y, Math.round(radius), Math.round(radius), 0, 360);
+    }
 }
