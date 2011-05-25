@@ -4,7 +4,7 @@ package slimesoccer;
  *
  * @author edvo
  */
-public abstract class MoveAble {
+public abstract class MoveAble implements Drawable {
 
     protected int x, y;
     protected Vector2D vector;

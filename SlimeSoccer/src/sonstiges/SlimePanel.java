@@ -8,7 +8,9 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.JPanel;
+import slimesoccer.Ball;
 import slimesoccer.Slime;
+import slimesoccer.Vector2D;
 
 /**
  *
@@ -20,9 +22,11 @@ import slimesoccer.Slime;
 public class SlimePanel extends JPanel {
 
     private Slime slime = new Slime(20, 30);
+    private Ball ball = new Ball(50,60,40);
 
     {
         slime.getVector().setX(1);
+        slime.setVector(new Vector2D(0.5,10));
     }
 
     public SlimePanel() {
@@ -38,8 +42,11 @@ public class SlimePanel extends JPanel {
 
         Graphics2D g2D = (Graphics2D) g; //Graphics2D bietet Anti-Aliasing
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Wirkt durch AA um einiges schöner!
-        g2D.fillArc(slime.getXCoord() % this.getWidth(), slime.getYCoord() % this.getHeight(), (int) Slime.SLIME_RADIUS, (int) Slime.SLIME_RADIUS, 0, 180); //Halbkreis zeichnen
+        //g2D.fillArc(slime.getXCoord() % this.getWidth(), slime.getYCoord() % this.getHeight(), (int) Slime.SLIME_RADIUS, (int) Slime.SLIME_RADIUS, 0, 180); //Halbkreis zeichnen
+        slime.draw(g);
+        ball.draw(g);
         slime.update();
+        ball.update();
 
 
 
