@@ -7,7 +7,7 @@ package slimesoccer;
 public class Vector2D {
 
     private double x, y; //X is ume, Y is aufe
-
+    public static final Vector2D GRAVITY = new Vector2D(0.0,0.15);
     /**
      * Erzeugt einen neuen Vektor mit x und y auf 0.
      */

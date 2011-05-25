@@ -7,8 +7,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -19,7 +17,7 @@ import javax.swing.JPanel;
 public class Board extends JPanel {
 
 
-
+    public static final int FLOOR = 480;
     private Ball ball;
     private Goal leftGoal;
     private Goal rightGoal;
