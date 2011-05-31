@@ -15,7 +15,7 @@ public class Server {
      *
      * @param args
      */
-    public static void main(String args) {
+    public static void main(String[] args) {
         int fps = 20;
         boolean running = true;
         try {
@@ -23,6 +23,7 @@ public class Server {
             while (running) {
                 Socket player1 = ss.accept();
                 Socket player2 = ss.accept();
+                System.out.println("Creating game for " + player1.getInetAddress().getHostAddress() + " and " + player2.getInetAddress().getHostAddress());
                 new Timer().scheduleAtFixedRate(new ServerWorker(player1, player2), 10, 1000 / fps);
             }
         } catch (IOException ioe) {

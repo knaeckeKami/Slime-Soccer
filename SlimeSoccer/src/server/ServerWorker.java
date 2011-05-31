@@ -1,6 +1,7 @@
 package server;
 
 import client.Client;
+import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -109,7 +110,6 @@ public class ServerWorker extends TimerTask {
                 this.ball.getYCoord() - this.player1Slime.getYCoord());
 
         if (v1.squarelength() < ball_slime_diff * ball_slime_diff) {
-            
         }
     }
 
@@ -118,14 +118,15 @@ public class ServerWorker extends TimerTask {
     }
 
     private void pressKey(int player, int keycode) {
-        this.keys[player][keycode - 25] = true;
+        this.keys[player][keycode - 0x25] = true;       // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
     }
 
     private void releaseKey(int player, int keycode) {
-        this.keys[player][keycode - 25] = false;
+        this.keys[player][keycode - 0x25] = false;      // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
     }
 
     private void setKeystatus(int player, int keycode, boolean pressed) {
-        this.keys[player][keycode - 25] = pressed;
+        System.out.println("Debug: Player(" + player + ") set key status " + keycode + " to " + pressed);
+        this.keys[player][keycode - 0x25] = pressed;    // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
     }
 }

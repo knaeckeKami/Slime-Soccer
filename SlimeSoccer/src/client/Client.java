@@ -1,9 +1,11 @@
 package client;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import slimesoccer.ArrowKeyListener;
 import slimesoccer.Board;
 
 /**
@@ -14,11 +16,8 @@ import slimesoccer.Board;
  */
 public class Client extends JFrame {
 
-    public static final int BOARD_WIDTH=500;
-    public static final int BOARD_HEIGHT=500;
-
-
-
+    public static final int BOARD_WIDTH = 500;
+    public static final int BOARD_HEIGHT = 500;
     private String serverIP = "localhost";
     private int serverPort = 1337;
     private Socket server;
@@ -38,20 +37,17 @@ public class Client extends JFrame {
         }
         try {
             this.server = new Socket(this.serverIP, this.serverPort);
+            this.addKeyListener(new ArrowKeyListener(new DataOutputStream(this.server.getOutputStream())));
         } catch (IOException ex) {
             System.err.println(ex);
         }
-
-
+        
     }
 
     private void initComponents() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().add(new Board(Client.BOARD_WIDTH,Client.BOARD_HEIGHT,this.server));
+        this.getContentPane().add(new Board(Client.BOARD_WIDTH, Client.BOARD_HEIGHT));
         this.setSize(600, 600);
-    
-
-
     }
 
     public static void main(String... args) {
@@ -59,7 +55,7 @@ public class Client extends JFrame {
 
             public void run() {
                 Client client = new Client();
-                client.setVisible(true);                
+                client.setVisible(true);
             }
         });
     }

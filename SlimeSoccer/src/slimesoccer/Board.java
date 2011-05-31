@@ -1,8 +1,6 @@
 package slimesoccer;
 
 import java.awt.Graphics;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -40,8 +38,10 @@ public class Board extends JPanel {
     public Board(int width, int height) {
         super(true);    // enable double buffering
         this.setSize(width, height);
-
-        this.addKeyListener(new ArrowKeyListener(this.dout));
+        this.player = new Slime();
+        this.enemy = new Slime();
+        this.ball = new Ball(Ball.STANDARD_RADIUS);
+//        this.addKeyListener(new ArrowKeyListener(this.dout));
     }
 
     public Board(int width, int height, Socket server) {
@@ -57,9 +57,6 @@ public class Board extends JPanel {
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
         }
-
-
-
     }
 
 
