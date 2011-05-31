@@ -25,20 +25,20 @@ public class ArrowKeyListener extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        keySend(e, true);
+        keySend(e.getKeyCode(), true);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        keySend(e, false);
+        keySend(e.getKeyCode(), false);
     }
 
-    private void keySend(KeyEvent e, boolean pressed) {
-        if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_RIGHT) {
+    private void keySend(int keycode, boolean pressed) {
+        if ( keycode  == KeyEvent.VK_LEFT || keycode  == KeyEvent.VK_RIGHT || keycode == KeyEvent.VK_UP) {
             try {
 
                 dout.writeByte(Constants.TYPE_KEY);
-                dout.writeByte(e.getKeyCode());
+                dout.writeByte(keycode);
                 dout.writeBoolean(pressed);
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());

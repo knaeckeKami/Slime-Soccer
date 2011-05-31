@@ -41,18 +41,7 @@ public class Board extends JPanel {
         super(true);    // enable double buffering
         this.setSize(width, height);
 
-        this.addKeyListener(new KeyAdapter() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                super.keyPressed(e);
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                super.keyReleased(e);
-            }
-        });
+        this.addKeyListener(new ArrowKeyListener(this.dout));
     }
 
     public Board(int width, int height, Socket server) {
@@ -75,6 +64,7 @@ public class Board extends JPanel {
 
 
 
+    @Override
     public void paint(Graphics g) {
         super.paint(g);
         enemy.draw(g);

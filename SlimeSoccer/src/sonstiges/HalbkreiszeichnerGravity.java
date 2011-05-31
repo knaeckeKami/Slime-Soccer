@@ -24,6 +24,8 @@ public class HalbkreiszeichnerGravity extends javax.swing.JFrame {
     /** Creates new form NewJFrame1 */
     public HalbkreiszeichnerGravity() {
         initComponents();
+        panel2.setVisible(true);
+        panel2.setBackground(Color.red);
      
        
     }
@@ -95,7 +97,8 @@ public class HalbkreiszeichnerGravity extends javax.swing.JFrame {
             }
         });
     }
+    private static SlimePanelGravity panel2 = new SlimePanelGravity(true);
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel panel;
+    private static javax.swing.JPanel panel;
     // End of variables declaration//GEN-END:variables
 }

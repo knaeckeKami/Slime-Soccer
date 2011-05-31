@@ -20,27 +20,31 @@ import slimesoccer.Vector2D;
  */
 public class SlimePanelGravity extends JPanel {
 
-    private Slime slime = new Slime(20, 120, new Vector2D(3,-5));
-    private static final Vector2D gravity = new Vector2D(0.0,0.15);
+    private Slime slime = new Slime(20, 120, new Vector2D(3, -5));
+    private static final Vector2D gravity = new Vector2D(0.0, 0.15);
 
- 
     public SlimePanelGravity() {
     }
 
     public SlimePanelGravity(boolean doublebuffering) {
         super(doublebuffering);
+        System.out.println(this.isDoubleBuffered());
+    }
+
+    public void update() {
+        this.slime.getVector().add(gravity);
+        this.slime.getVector().shorten(0.9995);
+        slime.update();
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    public void paint(Graphics g) {
         super.paintComponent(g);
 
         Graphics2D g2D = (Graphics2D) g; //Graphics2D bietet Anti-Aliasing
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Wirkt durch AA um einiges schöner!
         g2D.fillArc(slime.getXCoord() % this.getWidth(), slime.getYCoord() % this.getHeight(), (int) Slime.SLIME_RADIUS, (int) Slime.SLIME_RADIUS, 0, 180); //Halbkreis zeichnen
-        this.slime.getVector().add(gravity);
-        this.slime.getVector().shorten(0.9995);
-        slime.update();
+
 
 
 

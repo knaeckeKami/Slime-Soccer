@@ -35,6 +35,8 @@ public class SlimePanel extends JPanel {
     public SlimePanel(boolean doublebuffering) {
         super(doublebuffering);
     }
+    
+
 
     @Override
     public void paintComponent(Graphics g) {
@@ -52,3 +54,4 @@ public class SlimePanel extends JPanel {
 
     }
 }
+

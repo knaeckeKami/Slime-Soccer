@@ -43,6 +43,8 @@ public class Ball extends MoveAble {
 
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillArc(x, y, Math.round(radius), Math.round(radius), 0, 360);
+        int roundedRadius=Math.round(radius);
+   
+        g.fillArc(x, y, roundedRadius, roundedRadius, 0, 360);
     }
 }
