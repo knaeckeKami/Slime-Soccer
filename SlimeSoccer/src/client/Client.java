@@ -24,6 +24,7 @@ public class Client extends JFrame {
     private Socket server;
     private Board board;
 
+
     public Client() {
         super("SlimeSoccer!!");
         this.initComponents();
@@ -57,6 +58,7 @@ public class Client extends JFrame {
             public void run() {
                 Client client = new Client();
                 client.setVisible(true);
+                
             }
         });
     }

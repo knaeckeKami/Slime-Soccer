@@ -27,4 +27,9 @@ public interface Constants {
      * sowie boolean (true=pressed, false=released)
      */
     public static final char TYPE_KEY = 'k';
+    
+    /**
+     * w gefolgt von boolean (true=spieler, false=gegner);
+     */
+    public static final char TYPE_GAME_WIN = 'w';
 }
