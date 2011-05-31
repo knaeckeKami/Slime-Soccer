@@ -10,6 +10,7 @@ import slimesoccer.Board;
 
 /**
  * @TODO evtl JOptionPane erst anzeigen, wenn fenster geladen?
+ * @TODO Initialisierungsdaten lesen (Ball und Spielerpositionen @link ServerWorker Zeile ~111)
  * 
  * @author 3BHDV - Timo Hinterleitner
  * @author 3BHDV - Martin Kamleithner
