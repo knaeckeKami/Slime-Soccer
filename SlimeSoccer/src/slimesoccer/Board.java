@@ -153,7 +153,7 @@ public class Board extends JPanel {
                         case Constants.TYPE_GAME_WIN:
                             break;
                         default:
-                            System.err.println("Kommuniaktionsfehler: positons[0] =" + serverCommand);
+                            System.err.println("Kommunikaktionsfehler: Commando =" + serverCommand);
                             break;
                     }
 
