@@ -13,6 +13,7 @@ import java.nio.IntBuffer;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -23,6 +24,7 @@ import javax.swing.JPanel;
 public class Board extends JPanel {
 
     public static final int FLOOR = 480;
+    public static final int GOAL_DISPLAY_HEIGHT = 800;
     private Ball ball;
     private Goal leftGoal;
     private Goal rightGoal;
@@ -31,16 +33,17 @@ public class Board extends JPanel {
     private Socket server;
     private DataInputStream din;
     private DataOutputStream dout;
-    private int ownGoals, otherGoals;
+    private int ownGoals, enemyGoals;
 
     public Board() {
         this(600, 400);
     }
 
     /**
-     * @deprecated kein server!
+     * 
      * @param width
      * @param height
+     * @param din
      */
     public Board(int width, int height) {
         super(true);    // enable double buffering
@@ -66,6 +69,11 @@ public class Board extends JPanel {
             System.err.println(ex.getMessage());
         }
     }
+    public void startGame(DataInputStream din){
+        this.din=din;
+        new Game().start();
+    }
+
 
     @Override
     public void paint(Graphics g) {
@@ -79,6 +87,10 @@ public class Board extends JPanel {
         enemy.draw(g);
         player.draw(g);
         ball.draw(g);
+
+        //Tore zeichnen
+        g.drawString(Integer.toString(ownGoals), 50, Board.GOAL_DISPLAY_HEIGHT);
+        g.drawString(Integer.toString(enemyGoals), this.getWidth()-50, Board.GOAL_DISPLAY_HEIGHT);
 
     }
 
@@ -109,27 +121,23 @@ public class Board extends JPanel {
                 try {
                     //Commandobyte lesen
                     serverCommand = Board.this.din.read();
+                    System.out.println("Debug:  readbyte " + serverCommand);
                     switch (serverCommand) {
                         case Constants.TYPE_COORDS:
+                            System.out.println("Debug: Update Coords");
                             /**
                              * PROBLEM: 
-                             * Wie liest man jetzt am besten?
-                             * Wenn man ein byte[] liest, in dem die x/y Coords liegen, hat man das Problem, wie macht man performant ints daraus.
-                             * Zum Lesen eines int[] gibt es keine Methode,
-                             * Wenn man einzelne ints liest, hat man wieder das Problem, was ist wenn der Stream blockt?)
-                             * 
-                             *****eventuell Lösung:
+                             * Wie liest man jetzt am besten
+                             * Lösung:
                              ***** http://download.oracle.com/javase/1.4.2/docs/api/java/nio/ByteBuffer.html
                              ***** Nicht Blockende Byte-Buffer, die als Int-Buffer betrachtet werden können!
                              ***** IST IMPLEMENTIERT, ABER NOCH UNGETESTET!!
                              * 
-                             * 
-                             * Andere Lösung:
-                             * In einem separaten Thread lesen, da ist es egal wenn er geblockt wird.
-                             * Problem: Synchronisation, Performance...
+                
                              */
-                            din.read(positions);
+                          
                             readBytes = din.read(positions);
+                            System.out.println("Debug: readByte: " +readBytes);
                             if (readBytes != positonsSize) {
                                 //I glaub es is besser, das Package wegzuschmeißen und das nächste zu lesen wenn was schiefgangen is
                                 //Als dann extra Fehlerbehandlung zu machen was Zeit kostet und evtl Performance runterzieht
@@ -139,18 +147,26 @@ public class Board extends JPanel {
                                 //Zurücksetzen der LesePosition
                                 intBuf.clear();
                                 //Updaten der Positonen
-                                ball.x=intBuf.get();
-                                ball.y=intBuf.get();
+                                ball.x=  intBuf.get();
+                                ball.y=  intBuf.get();
                                 player.x=intBuf.get();
                                 player.y=intBuf.get();
-                                enemy.x=intBuf.get();
-                                enemy.y=intBuf.get();
+                                enemy.x= intBuf.get();
+                                enemy.y= intBuf.get();
                                 Board.this.repaint();
+                                break;
                             }
                             
                         case Constants.TYPE_GOAL:
                             this.addGoal(din.readBoolean());
+                            break;
                         case Constants.TYPE_GAME_WIN:
+                            if(din.readBoolean()){
+                                JOptionPane.showMessageDialog(Board.this, "Sie haben Gewonnen!");
+                            }else{
+                                JOptionPane.showMessageDialog(Board.this, "Sie haben verloren!");
+                            }
+                            gameRunning=false;
                             break;
                         default:
                             System.err.println("Kommunikaktionsfehler: Commando =" + serverCommand);
@@ -164,6 +180,12 @@ public class Board extends JPanel {
         }
 
         private void addGoal(boolean eigenerSpieler) {
+            if(eigenerSpieler){
+                ownGoals++;
+            }else{
+                enemyGoals++;
+            }
+
         }
     }
 }

@@ -13,7 +13,7 @@ public class Main {
      */
     public static void main(String[] args) {
         //diverse Tests
-        Vector2D v = new Vector2D(4,0);
+        Vector2D v = new Vector2D(4,5);
         v.einheitsVector();
         System.out.println(v);
         

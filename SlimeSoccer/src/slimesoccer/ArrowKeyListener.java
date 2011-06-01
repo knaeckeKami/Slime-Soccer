@@ -35,7 +35,9 @@ public class ArrowKeyListener extends KeyAdapter {
                 dout.writeByte(Constants.TYPE_KEY);
                 dout.writeByte(keycode);
                 dout.writeBoolean(pressed);
+                dout.flush();
                 this.keypressed[keycode-0x25] = pressed;
+
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());
             }

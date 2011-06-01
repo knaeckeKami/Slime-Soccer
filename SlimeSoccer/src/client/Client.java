@@ -1,8 +1,11 @@
 package client;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import slimesoccer.ArrowKeyListener;
@@ -48,7 +51,7 @@ public class Client extends JFrame {
 
     private void initComponents() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().add(new Board(Client.BOARD_WIDTH, Client.BOARD_HEIGHT));
+        this.getContentPane().add(board=new Board(Client.BOARD_WIDTH, Client.BOARD_HEIGHT));
         this.setSize(600, 600);
     }
 
@@ -58,6 +61,11 @@ public class Client extends JFrame {
             public void run() {
                 Client client = new Client();
                 client.setVisible(true);
+                try {
+                    client.board.startGame(new DataInputStream(client.server.getInputStream()));
+                } catch (IOException ex) {
+                    System.out.println("Fehler startGame:" +ex.getMessage());
+                }
                 
             }
         });
