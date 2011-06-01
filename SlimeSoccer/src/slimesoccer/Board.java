@@ -1,18 +1,17 @@
 package slimesoccer;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -34,6 +33,7 @@ public class Board extends JPanel {
     private DataInputStream din;
     private DataOutputStream dout;
     private int ownGoals, enemyGoals;
+    private String ownName, enemyName;
 
     public Board() {
         this(600, 400);
@@ -69,11 +69,11 @@ public class Board extends JPanel {
             System.err.println(ex.getMessage());
         }
     }
-    public void startGame(DataInputStream din){
-        this.din=din;
+
+    public void startGame(DataInputStream din) {
+        this.din = din;
         new Game().start();
     }
-
 
     @Override
     public void paint(Graphics g) {
@@ -90,7 +90,7 @@ public class Board extends JPanel {
 
         //Tore zeichnen
         g.drawString(Integer.toString(ownGoals), 50, Board.GOAL_DISPLAY_HEIGHT);
-        g.drawString(Integer.toString(enemyGoals), this.getWidth()-50, Board.GOAL_DISPLAY_HEIGHT);
+        g.drawString(Integer.toString(enemyGoals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
 
     }
 
@@ -114,7 +114,7 @@ public class Board extends JPanel {
         public void run() {
 
             int serverCommand; //1. Byte, das vom Server kommt, zB Constants.TYPE_COORDS
-            
+
             int readBytes;   //Gelesende Bytes zB für din.read(positions);
             while (gameRunning) {
 
@@ -133,40 +133,51 @@ public class Board extends JPanel {
                              ***** Nicht Blockende Byte-Buffer, die als Int-Buffer betrachtet werden können!
                              ***** IST IMPLEMENTIERT, ABER NOCH UNGETESTET!!
                              * 
-                
-                             */
-                          
-                            readBytes = din.read(positions);
-                            System.out.println("Debug: readByte: " +readBytes);
-                            if (readBytes != positonsSize) {
-                                //I glaub es is besser, das Package wegzuschmeißen und das nächste zu lesen wenn was schiefgangen is
-                                //Als dann extra Fehlerbehandlung zu machen was Zeit kostet und evtl Performance runterzieht
-                                System.err.println("Fehlerhaftes Package! Gelesene bytes: " + readBytes + "Inhalt:" + Arrays.toString(positions));
-                                continue;
-                            }else{
-                                //Zurücksetzen der LesePosition
-                                intBuf.clear();
-                                //Updaten der Positonen
-                                ball.x=  intBuf.get();
-                                ball.y=  intBuf.get();
-                                player.x=intBuf.get();
-                                player.y=intBuf.get();
-                                enemy.x= intBuf.get();
-                                enemy.y= intBuf.get();
-                                Board.this.repaint();
-                                break;
-                            }
                             
+                             */
+                            ball.x = din.readInt();
+                            ball.y = din.readInt();
+                            player.x = din.readInt();
+                            player.y = din.readInt();
+                            enemy.x = din.readInt();
+                            enemy.y = din.readInt();
+                            Board.this.repaint();
+                            break;
+//                            readBytes = din.read(positions);
+//                            System.out.println("Debug: readByte: " +readBytes);
+//                            if (readBytes != positonsSize) {
+//                                //I glaub es is besser, das Package wegzuschmeißen und das nächste zu lesen wenn was schiefgangen is
+//                                //Als dann extra Fehlerbehandlung zu machen was Zeit kostet und evtl Performance runterzieht
+//                                System.err.println("Fehlerhaftes Package! Gelesene bytes: " + readBytes + "Inhalt:" + Arrays.toString(positions));
+//                                continue;
+//                            }else{
+//                                //Zurücksetzen der LesePosition
+//                                intBuf.clear();
+//                                //Updaten der Positonen
+//                                ball.x=  intBuf.get();
+//                                ball.y=  intBuf.get();
+//                                player.x=intBuf.get();
+//                                player.y=intBuf.get();
+//                                enemy.x= intBuf.get();
+//                                enemy.y= intBuf.get();
+//                                Board.this.repaint();
+//                                break;
+//                            }
+
                         case Constants.TYPE_GOAL:
                             this.addGoal(din.readBoolean());
                             break;
                         case Constants.TYPE_GAME_WIN:
-                            if(din.readBoolean()){
+                            if (din.readBoolean()) {
                                 JOptionPane.showMessageDialog(Board.this, "Sie haben Gewonnen!");
-                            }else{
+                            } else {
                                 JOptionPane.showMessageDialog(Board.this, "Sie haben verloren!");
                             }
-                            gameRunning=false;
+                            gameRunning = false;
+                            break;
+                        case Constants.TYPE_NAME:
+                            System.out.println("Debug: reading names");
+                            Board.this.enemyName = new BufferedReader(new InputStreamReader(din)).readLine();
                             break;
                         default:
                             System.err.println("Kommunikaktionsfehler: Commando =" + serverCommand);
@@ -180,9 +191,9 @@ public class Board extends JPanel {
         }
 
         private void addGoal(boolean eigenerSpieler) {
-            if(eigenerSpieler){
+            if (eigenerSpieler) {
                 ownGoals++;
-            }else{
+            } else {
                 enemyGoals++;
             }
 

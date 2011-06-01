@@ -36,9 +36,9 @@ public class ServerWorker extends TimerTask {
 
         // Sending names of competitors
         this.p1.dos.writeByte(Constants.TYPE_NAME);
-        this.p1.dos.writeBytes(this.p1.name);
+        this.p1.dos.writeBytes(this.p1.name + "\n");
         this.p2.dos.writeByte(Constants.TYPE_NAME);
-        this.p2.dos.writeBytes(this.p2.name);
+        this.p2.dos.writeBytes(this.p2.name + "\n");
 
         // Sending initial coordinates
         this.writeCoords(this.p1);
@@ -100,6 +100,14 @@ public class ServerWorker extends TimerTask {
             this.writeCoords(this.p2);
         } catch (IOException ioe) {
             System.err.println(ioe);
+            this.cancel();              // Timer abbrechen, nach IO-Error whs keine vernünftige Kommunikation mehr möglich
+            
+            try {
+                this.p1.socket.close();
+                this.p2.socket.close();
+            } catch(IOException ioe2) {
+                System.err.println(ioe2);
+            }
         }
     }
 
