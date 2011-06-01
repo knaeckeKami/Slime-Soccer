@@ -11,12 +11,13 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.util.Arrays;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
  *
+ * @todo goal, slime, name, etc in Player-Objekt auslagern! (übersichtlichkeit und so ^^)
+ * 
  * @author 3BHDV - Timo Hinterleitner
  * @author 3BHDV - Martin Kamleithner
  */
@@ -180,6 +181,11 @@ public class Board extends JPanel {
                             Board.this.enemyName = new BufferedReader(new InputStreamReader(din)).readLine();
                             break;
                         default:
+                            if(serverCommand == -1) {
+                                System.err.println("Connection error!");
+                                this.gameRunning = false;
+                                break;
+                            }
                             System.err.println("Kommunikaktionsfehler: Commando =" + serverCommand);
                             break;
                     }
@@ -192,9 +198,9 @@ public class Board extends JPanel {
 
         private void addGoal(boolean eigenerSpieler) {
             if (eigenerSpieler) {
-                ownGoals++;
+                Board.this.ownGoals++;
             } else {
-                enemyGoals++;
+                Board.this.enemyGoals++;
             }
 
         }

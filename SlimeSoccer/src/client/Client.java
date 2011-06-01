@@ -25,7 +25,6 @@ public class Client extends JFrame {
     private Socket server;
     private Board board;
 
-
     public Client() {
         super("SlimeSoccer!!");
         this.initComponents();
@@ -44,12 +43,12 @@ public class Client extends JFrame {
         } catch (IOException ex) {
             System.err.println(ex);
         }
-        
+
     }
 
     private void initComponents() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().add(board=new Board(Client.BOARD_WIDTH, Client.BOARD_HEIGHT));
+        this.getContentPane().add(this.board = new Board(Client.BOARD_WIDTH, Client.BOARD_HEIGHT));
         this.setSize(600, 600);
     }
 
@@ -62,9 +61,9 @@ public class Client extends JFrame {
                 try {
                     client.board.startGame(new DataInputStream(client.server.getInputStream()));
                 } catch (IOException ex) {
-                    System.out.println("Fehler startGame:" +ex.getMessage());
+                    System.out.println("Fehler startGame:" + ex.getMessage());
                 }
-                
+
             }
         });
     }

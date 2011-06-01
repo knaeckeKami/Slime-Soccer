@@ -37,7 +37,8 @@ public class Player {
 
         switch (number) {
             case 1:
-                this.slime = new Slime(Board.WIDTH / 4, Board.FLOOR);
+                // Sollte jetzt eigentlich ÜBER dem floor sein, auch wenn "nach unten" gezeichnet wird.. tut aber ned -.-
+                this.slime = new Slime(Board.WIDTH / 4, (int)(Board.FLOOR - Slime.SLIME_RADIUS));
                 break;
             case 2:
                 this.slime = new Slime(Board.WIDTH / 4 * 3, Board.FLOOR);
@@ -137,7 +138,7 @@ public class Player {
             this.slime.getVector().setX(0);
         }
         if(this.keys[KeyEvent.VK_UP - 0x25]) {
-            this.slime.setYCoord(-5);
+            this.slime.getVector().setY(-5);
         }
     }
 }
