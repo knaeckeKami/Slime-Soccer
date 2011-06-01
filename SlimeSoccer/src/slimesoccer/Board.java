@@ -149,7 +149,7 @@ public class Board extends JPanel {
                             }
                             
                         case Constants.TYPE_GOAL:
-                            addGoal();
+                            this.addGoal(din.readBoolean());
                         case Constants.TYPE_GAME_WIN:
                             break;
                         default:
@@ -163,7 +163,7 @@ public class Board extends JPanel {
             }
         }
 
-        private void addGoal() {
+        private void addGoal(boolean eigenerSpieler) {
         }
     }
 }

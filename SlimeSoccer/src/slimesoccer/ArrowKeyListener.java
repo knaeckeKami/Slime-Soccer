@@ -29,7 +29,7 @@ public class ArrowKeyListener extends KeyAdapter {
     }
 
     private void keySend(int keycode, boolean pressed) {
-        if ((keycode == KeyEvent.VK_LEFT || keycode == KeyEvent.VK_RIGHT || keycode == KeyEvent.VK_UP) && this.keypressed[keycode-0x25] != pressed) {
+        if ((keycode == KeyEvent.VK_LEFT || keycode == KeyEvent.VK_RIGHT || keycode == KeyEvent.VK_UP)/* && this.keypressed[keycode-0x25] != pressed*/) {
             try {
                 System.out.println("Debug: sending " + keycode + " , pressed:" + pressed);
                 dout.writeByte(Constants.TYPE_KEY);

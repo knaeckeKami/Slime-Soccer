@@ -7,7 +7,8 @@ package slimesoccer;
 public class Vector2D {
 
     private double x, y; //X is ume, Y is aufe
-    public static final Vector2D GRAVITY = new Vector2D(0.0,0.15);
+    public static final Vector2D GRAVITY = new Vector2D(0.0, 0.15);
+
     /**
      * Erzeugt einen neuen Vektor mit x und y auf 0.
      */
@@ -37,19 +38,20 @@ public class Vector2D {
      * Addiert den übergebenen Vektor.
      * @param v2 Vektor der addiert werden soll
      */
-    public void add(Vector2D v2) {
+    public Vector2D add(Vector2D v2) {
         this.x += v2.x;
         this.y += v2.y;
+        return this;
     }
 
     /**
      * Subtrahiert den übergeben Vektor.
      * @param v2 Vektor der subtrahiert werden soll
      */
-    public void subtract(Vector2D v2) {
+    public Vector2D subtract(Vector2D v2) {
         this.x -= v2.x;
         this.y -= v2.y;
-
+        return this;
     }
 
     /**
@@ -90,14 +92,15 @@ public class Vector2D {
     public void changeXDir() {
         this.x = -this.x;
     }
-    
+
     /**
      * Kürzt den Vektor um den Faktor factor (für Reibung oda so)
      * @param factor 
      */
-    public void shorten(double factor){
+    public Vector2D multiply(double factor) {
         this.x *= factor;
         this.y *= factor;
+        return this;
     }
 
     /**
@@ -139,7 +142,11 @@ public class Vector2D {
     public void setY(double y) {
         this.y = y;
     }
-    
+
+    public double scalarProduct(Vector2D v2) {
+        return this.x * v2.x + this.y + v2.y;
+    }
+
     /**
      * Setzt x- und y-Wert des Vektors
      * @param x neuer x-Wert

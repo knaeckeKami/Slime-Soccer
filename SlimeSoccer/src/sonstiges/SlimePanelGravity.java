@@ -33,7 +33,7 @@ public class SlimePanelGravity extends JPanel {
 
     public void update() {
         this.slime.getVector().add(gravity);
-        this.slime.getVector().shorten(0.9995);
+        this.slime.getVector().multiply(0.9995);
         slime.update();
     }
 

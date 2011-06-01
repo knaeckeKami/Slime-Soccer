@@ -97,6 +97,29 @@ public class ServerWorker extends TimerTask {
                 this.ball.getYCoord() - this.p1.slime.getYCoord());
 
         if (v1.squarelength() < ball_slime_diff * ball_slime_diff) {
+            /*
+             * v1 = Vector vom Mittelpunkt des Slimes zum Mittelpunkt des Balls
+             * r  = Vector vom Mittelpunkt des Slimes zum Aufprallpunkt auf der Oberfläche des Slimes
+             * L  = Länge des Lot-Vectors
+             * austritt = Austrittsvector des Balls nach dem Aufprall
+             *
+             * r = einheitsvector von r * SLIME_RADIUS
+             * r = ( (->r) / |(->r)| )  * SLIME_RADIUS
+             *
+             * L = (Scalarprodukt von Einfallsvector und Vector des Slimes) / (Länge des Einfallsvectors)
+             * L = ( (->this.ball.getVector()) * (->r) )                    / |(->this.ball.getVector())|
+             *
+             * lot = (Länge * Einheitsvector r)         // weil lot und r parallel sind!
+             * lot = (L * ( (->r) / |(->r)| )
+             *
+             * austritt = (2 * lot + Einfallsvector)
+             * austritt = 2 * lot + this.ball.getVector()
+             */
+            Vector2D r = v1.einheitsVector().multiply(Slime.SLIME_RADIUS);
+            double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
+            Vector2D lot = r.einheitsVector().multiply(L);
+            Vector2D austritt = lot.multiply(2).add(this.ball.getVector());
+            this.ball.setVector(austritt);
         }
     }
 
@@ -104,16 +127,16 @@ public class ServerWorker extends TimerTask {
         p.dos.writeByte(Constants.TYPE_COORDS);
 
         // x,y vom Ball
-        p.dos.writeByte(this.ball.getXCoord());
-        p.dos.writeByte(this.ball.getYCoord());
+        p.dos.writeInt(this.ball.getXCoord());
+        p.dos.writeInt(this.ball.getYCoord());
 
         // x,y vom eigenen Spieler
-        p.dos.writeByte(p.slime.getXCoord());
-        p.dos.writeByte(p.slime.getYCoord());
+        p.dos.writeInt(p.slime.getXCoord());
+        p.dos.writeInt(p.slime.getYCoord());
 
         // x,y vom anderen Spieler
-        p.dos.writeByte(p.enemy.slime.getXCoord());
-        p.dos.writeByte(p.enemy.slime.getYCoord());
+        p.dos.writeInt(p.enemy.slime.getXCoord());
+        p.dos.writeInt(p.enemy.slime.getYCoord());
     }
 
     private boolean getKeystatus(int player, int keycode) {
