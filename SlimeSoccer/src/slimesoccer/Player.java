@@ -4,6 +4,7 @@
  */
 package slimesoccer;
 
+import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class Player {
     public DataOutputStream dos;
     public String name;
     public Player enemy;
+    public boolean[] keys = new boolean[3];
 
     public Player(int number, Socket socket) throws IOException {
         this.number = number;
@@ -42,7 +44,7 @@ public class Player {
             default:
                 break;
         }
-        
+
         this.dis = new DataInputStream(socket.getInputStream());
         this.dos = new DataOutputStream(socket.getOutputStream());
     }
@@ -101,5 +103,41 @@ public class Player {
 
     public void setSocket(Socket socket) {
         this.socket = socket;
+    }
+
+    /**
+     * Setzt den Keystatus der Tasten
+     * VK_LEFT, VK_UP, oder VK_RIGHT
+     * true wenn gedrückt, false wenn nicht
+     * @param keycode muss VK_LEFT, VK_UP, oder VK_RIGHT sein!!
+     * @param pressed true wenn gedrückt, false wenn nicht
+     */
+    public void setKeystatus(int keycode, boolean pressed) {
+        System.out.println("Debug: Player(" + number + ") set key status " + keycode + " to " + pressed);
+        this.keys[keycode - 0x25] = pressed;    // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
+    }
+
+
+    /**
+     * Liefert den Keystatus einer Taste (VK_LEFT, VK_UP, oder VK_RIGHT)
+     * true wenn gedrückt, false wenn nicht
+     * @param keycode Code der gedrückten Taste (muss VK_LEFT, VK_UP, oder VK_RIGHT sein!!)
+     * @return true wenn gedrückt, false wenn nicht
+     */
+    public boolean getKeystatus(int keycode) {
+        return this.keys[keycode - 0x25];
+    }
+
+    public void update() {
+        if(this.keys[KeyEvent.VK_LEFT - 0x25] && !this.keys[KeyEvent.VK_RIGHT - 0x25]) {
+            this.slime.getVector().setX(-2);
+        } else if(!this.keys[KeyEvent.VK_LEFT - 0x25] && this.keys[KeyEvent.VK_RIGHT - 0x25]) {
+            this.slime.getVector().setX(-2);
+        } else {
+            this.slime.getVector().setX(0);
+        }
+        if(this.keys[KeyEvent.VK_UP - 0x25]) {
+            this.slime.setYCoord(-5);
+        }
     }
 }

@@ -59,6 +59,4 @@ public class Slime extends MoveAble {
         g.setColor(color);
         g.fillArc(x, y, Math.round(SLIME_RADIUS), Math.round(SLIME_RADIUS), 0, 180);
     }
-
-
 }
