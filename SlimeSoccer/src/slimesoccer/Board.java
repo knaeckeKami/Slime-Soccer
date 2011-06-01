@@ -145,7 +145,7 @@ public class Board extends JPanel {
                                 player.y=intBuf.get();
                                 enemy.x=intBuf.get();
                                 enemy.y=intBuf.get();
-                                        
+                                Board.this.repaint();
                             }
                             
                         case Constants.TYPE_GOAL:
