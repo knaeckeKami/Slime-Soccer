@@ -82,6 +82,7 @@ public class ServerWorker extends TimerTask {
             // handle gravity
             if (this.ball.getYCoord() < Board.FLOOR) {
                 this.ball.getVector().add(Vector2D.GRAVITY);
+                this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_AIR);
             } else if(this.ball.getYCoord() >= Board.FLOOR) {
                 this.ball.getVector().changeYDir();
             }
@@ -149,6 +150,7 @@ public class ServerWorker extends TimerTask {
         // Kollision von Ball mit "Himmel" oder Boden
         if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.SLIME_FLOOR) {
             this.ball.getVector().changeYDir();
+            this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
         }
 
     }
@@ -176,7 +178,10 @@ public class ServerWorker extends TimerTask {
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_RADIUS);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
         Vector2D lot = r.einheitsVector().multiply(L);
-        Vector2D austritt = lot.multiply(2).add(this.ball.getVector());
+        //Changed: Berechnung allgemein hat gestimmt, aber die länge des austrittvektors nicht
+        //Also vom Austrittsvektor dein Einheitsvektor, multiplizieren mit der alten länge des balls
+        //-> Länge eintrittsvektor = länge austrittsvektor            |Ab hier neu   
+        Vector2D austritt = lot.multiply(2).add(this.ball.getVector()).einheitsVector().multiply(ball.getVector().length());
         this.ball.setVector(austritt);
         System.out.println("vektor nachher:" +austritt);
     }
