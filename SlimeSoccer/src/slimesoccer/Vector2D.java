@@ -8,8 +8,8 @@ public class Vector2D {
 
     private double x, y; //X is ume, Y is aufe
     public static final Vector2D GRAVITY = new Vector2D(0.0, 0.25);
-    public static final double FRICTION_FACTOR_AIR = 0.9995;
-    public static final double FRICTION_FACTOR_FLOOR = 0.995;
+    public static final double FRICTION_FACTOR_AIR = 0.995;
+    public static final double FRICTION_FACTOR_FLOOR = 0.87;
 
     /**
      * Erzeugt einen neuen Vektor mit x und y auf 0.

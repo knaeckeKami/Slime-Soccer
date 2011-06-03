@@ -6,7 +6,7 @@ package slimesoccer;
  */
 public abstract class MoveAble implements Drawable {
 
-    protected int x, y;
+    protected float x, y;
     protected Vector2D vector;
 
     /**
@@ -21,7 +21,7 @@ public abstract class MoveAble implements Drawable {
      * @param x x-Koordinate des Objekts
      * @param y y-Koordinate des Objekts
      */
-    protected MoveAble(int x, int y) {
+    protected MoveAble(float x, float y) {
         this(x, y, new Vector2D());
     }
 
@@ -32,7 +32,7 @@ public abstract class MoveAble implements Drawable {
      * @param y y-Koordinate des Objekts
      * @param vector Bewegungsrichtung und Geschwindigkeit des Objekts in Form eines Vektors
      */
-    protected MoveAble(int x, int y, Vector2D vector) {
+    protected MoveAble(float x, float y, Vector2D vector) {
         this.x = x;
         this.y = y;
         this.vector = vector;
@@ -59,7 +59,7 @@ public abstract class MoveAble implements Drawable {
      * Liefert die x-Koordinate des Objektes
      * @return x-Koordinate
      */
-    public int getXCoord() {
+    public double getXCoord() {
         return x;
     }
 
@@ -67,7 +67,7 @@ public abstract class MoveAble implements Drawable {
      * Setzt die x-Koordinate des Objektes
      * @param x x-Koordinate
      */
-    public void setXCoord(int x) {
+    public void setXCoord(float x) {
         this.x = x;
     }
 
@@ -75,7 +75,7 @@ public abstract class MoveAble implements Drawable {
      * Liefert die y-Koordinate des Objektes
      * @return y-Koordinate
      */
-    public int getYCoord() {
+    public double getYCoord() {
         return y;
     }
 
@@ -83,7 +83,7 @@ public abstract class MoveAble implements Drawable {
      * Setzt die y-Koordinate des Objektes
      * @param y y-Koordinate
      */
-    public void setYCoord(int y) {
+    public void setYCoord(float y) {
         this.y = y;
     }
 

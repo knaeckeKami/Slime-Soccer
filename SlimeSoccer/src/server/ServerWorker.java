@@ -85,6 +85,7 @@ public class ServerWorker extends TimerTask {
                 this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_AIR);
             } else if(this.ball.getYCoord() >= Board.FLOOR) {
                 this.ball.getVector().changeYDir();
+                //this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
             }
                 
             if (this.p1.slime.getYCoord() < Board.SLIME_FLOOR) {
@@ -104,7 +105,9 @@ public class ServerWorker extends TimerTask {
             this.p2.update();       // update slime vector (key pressed)
             this.p1.slime.update(); // move slime
             this.p2.slime.update(); // move slime
-
+            
+            System.out.println("Ball Vektor:" +ball.getVector());
+            
             this.writeCoords(this.p1);
             this.writeCoords(this.p2);
         } catch (IOException ioe) {
@@ -126,7 +129,7 @@ public class ServerWorker extends TimerTask {
      * Dabei wird der Vector des Balles entsprechend angepasst
      */
     private void checkCollisions() {
-        float ball_slime_diff = Ball.STANDARD_RADIUS + Slime.SLIME_RADIUS;
+        float ball_slime_diff = Ball.STANDARD_RADIUS + Slime.SLIME_RADIUS/2;
         Vector2D v1 = new Vector2D(this.ball.getXCoord() - this.p1.slime.getXCoord(),
                 this.ball.getYCoord() - this.p1.slime.getYCoord());
         Vector2D v2 = new Vector2D(this.ball.getXCoord() - this.p2.slime.getXCoord(),
@@ -150,7 +153,7 @@ public class ServerWorker extends TimerTask {
         // Kollision von Ball mit "Himmel" oder Boden
         if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.SLIME_FLOOR) {
             this.ball.getVector().changeYDir();
-            this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
+            //this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
         }
 
     }
@@ -192,15 +195,15 @@ public class ServerWorker extends TimerTask {
         p.dos.writeByte(Constants.TYPE_COORDS);
 
         // x,y vom Ball
-        p.dos.writeInt(this.ball.getXCoord());
-        p.dos.writeInt(this.ball.getYCoord());
+        p.dos.writeInt((int)this.ball.getXCoord());
+        p.dos.writeInt((int)this.ball.getYCoord());
 
         // x,y vom eigenen Spieler
-        p.dos.writeInt(p.slime.getXCoord());
-        p.dos.writeInt(p.slime.getYCoord());
+        p.dos.writeInt((int)p.slime.getXCoord());
+        p.dos.writeInt((int)p.slime.getYCoord());
 
         // x,y vom anderen Spieler
-        p.dos.writeInt(p.enemy.slime.getXCoord());
-        p.dos.writeInt(p.enemy.slime.getYCoord());
+        p.dos.writeInt((int)p.enemy.slime.getXCoord());
+        p.dos.writeInt((int)p.enemy.slime.getYCoord());
     }
 }

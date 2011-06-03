@@ -24,6 +24,6 @@ public class Goal extends MoveAble {
     }
 
     public void draw(Graphics g) {
-        g.drawImage(this.img, this.x, this.y, null);
+        g.drawImage(this.img, Math.round(x), Math.round(y), null);
     }
 }

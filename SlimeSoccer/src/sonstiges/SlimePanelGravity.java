@@ -43,7 +43,7 @@ public class SlimePanelGravity extends JPanel {
 
         Graphics2D g2D = (Graphics2D) g; //Graphics2D bietet Anti-Aliasing
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //Wirkt durch AA um einiges schöner!
-        g2D.fillArc(slime.getXCoord() % this.getWidth(), slime.getYCoord() % this.getHeight(), (int) Slime.SLIME_RADIUS, (int) Slime.SLIME_RADIUS, 0, 180); //Halbkreis zeichnen
+        //g2D.fillArc(slime.getXCoord() % this.getWidth(), slime.getYCoord() % this.getHeight(), (int) Slime.SLIME_RADIUS, (int) Slime.SLIME_RADIUS, 0, 180); //Halbkreis zeichnen
 
 
 

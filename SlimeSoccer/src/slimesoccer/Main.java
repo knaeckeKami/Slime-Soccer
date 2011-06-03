@@ -13,9 +13,9 @@ public class Main {
      */
     public static void main(String[] args) {
         //diverse Tests
-        Vector2D v = new Vector2D(4,5);
-        v.einheitsVector();
-        System.out.println(v);
+        Vector2D v = new Vector2D(-1,1);
+        
+        System.out.println(v.squarelength());
         
         Ball b = new Ball(100, 100, 15);
         b.vector = new Vector2D();
