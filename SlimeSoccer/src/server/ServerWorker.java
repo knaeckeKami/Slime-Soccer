@@ -128,8 +128,8 @@ public class ServerWorker extends TimerTask {
         float ball_slime_diff = Ball.STANDARD_RADIUS + Slime.SLIME_RADIUS;
         Vector2D v1 = new Vector2D(this.ball.getXCoord() - this.p1.slime.getXCoord(),
                 this.ball.getYCoord() - this.p1.slime.getYCoord());
-        Vector2D v2 = new Vector2D(this.ball.getXCoord() - this.p1.slime.getXCoord(),
-                this.ball.getYCoord() - this.p1.slime.getYCoord());
+        Vector2D v2 = new Vector2D(this.ball.getXCoord() - this.p2.slime.getXCoord(),
+                this.ball.getYCoord() - this.p2.slime.getYCoord());
 
         // Kollission von Slime 1 mit Ball
         if (v1.squarelength() <= ball_slime_diff * ball_slime_diff) {
@@ -147,7 +147,7 @@ public class ServerWorker extends TimerTask {
         }
 
         // Kollision von Ball mit "Himmel" oder Boden
-        if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.FLOOR) {
+        if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.SLIME_FLOOR) {
             this.ball.getVector().changeYDir();
         }
 
@@ -172,11 +172,13 @@ public class ServerWorker extends TimerTask {
      * austritt = 2 * lot + this.ball.getVector()
      */
     private void reflectBallFromSlime(Vector2D slimeToBall) {
+        System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_RADIUS);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
         Vector2D lot = r.einheitsVector().multiply(L);
         Vector2D austritt = lot.multiply(2).add(this.ball.getVector());
         this.ball.setVector(austritt);
+        System.out.println("vektor nachher:" +austritt);
     }
 
     private void writeCoords(Player p) throws IOException {
