@@ -16,7 +16,7 @@ public class Server {
      * @param args
      */
     public static void main(String[] args) {
-        int fps = 5;        // just for debugging
+        int fps = 20;        // just for debugging
         int port = 1337;
         boolean running = true;
         

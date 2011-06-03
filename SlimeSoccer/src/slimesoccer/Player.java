@@ -38,10 +38,10 @@ public class Player {
         switch (number) {
             case 1:
                 // Sollte jetzt eigentlich ÜBER dem floor sein, auch wenn "nach unten" gezeichnet wird.. tut aber ned -.-
-                this.slime = new Slime(Board.WIDTH / 4, (int)(Board.FLOOR - Slime.SLIME_RADIUS));
+                this.slime = new Slime(Board.WIDTH / 4, Board.SLIME_FLOOR);
                 break;
             case 2:
-                this.slime = new Slime(Board.WIDTH / 4 * 3, Board.FLOOR);
+                this.slime = new Slime(Board.WIDTH / 4 * 3, Board.SLIME_FLOOR);
             default:
                 break;
         }
@@ -131,14 +131,14 @@ public class Player {
 
     public void update() {
         if(this.keys[KeyEvent.VK_LEFT - 0x25] && !this.keys[KeyEvent.VK_RIGHT - 0x25]) {
-            this.slime.getVector().setX(-2);
+            this.slime.getVector().setX(-4);
         } else if(!this.keys[KeyEvent.VK_LEFT - 0x25] && this.keys[KeyEvent.VK_RIGHT - 0x25]) {
-            this.slime.getVector().setX(-2);
+            this.slime.getVector().setX(4);
         } else {
             this.slime.getVector().setX(0);
         }
-        if(this.keys[KeyEvent.VK_UP - 0x25]) {
-            this.slime.getVector().setY(-5);
+        if(this.keys[KeyEvent.VK_UP - 0x25] && this.slime.getYCoord() == Board.SLIME_FLOOR) {     // springen nur erlauben, wenn slime am boden
+            this.slime.getVector().setY(-4);
         }
     }
 }

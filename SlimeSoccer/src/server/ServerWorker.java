@@ -15,7 +15,6 @@ public class ServerWorker extends TimerTask {
     private Ball ball;
     private Player p1;
     private Player p2;
-    private boolean[][] keys = new boolean[2][3];
     private int[] goals = new int[2];
 
     /**
@@ -44,7 +43,6 @@ public class ServerWorker extends TimerTask {
         this.writeCoords(this.p1);
         this.writeCoords(this.p2);
     }
-
 
     /**
      * Liest (sofern vorhanden) Tastendrücke von den Clients, behandelt danach
@@ -84,28 +82,38 @@ public class ServerWorker extends TimerTask {
             // handle gravity
             if (this.ball.getYCoord() < Board.FLOOR) {
                 this.ball.getVector().add(Vector2D.GRAVITY);
+            } else if(this.ball.getYCoord() >= Board.FLOOR) {
+                this.ball.getVector().changeYDir();
             }
-            if (this.p1.slime.getYCoord() < Board.FLOOR) {
+                
+            if (this.p1.slime.getYCoord() < Board.SLIME_FLOOR) {
                 this.p1.slime.getVector().add(Vector2D.GRAVITY);
+            } else if(this.p1.slime.getYCoord() >= Board.SLIME_FLOOR) {
+                this.p1.slime.getVector().setY(0);
             }
-            if (this.p2.slime.getYCoord() < Board.FLOOR) {
+            
+            if (this.p2.slime.getYCoord() < Board.SLIME_FLOOR) {
                 this.p2.slime.getVector().add(Vector2D.GRAVITY);
+            }else if(this.p2.slime.getYCoord() >= Board.SLIME_FLOOR) {
+                this.p2.slime.getVector().setY(0);
             }
 
-            this.ball.update();
-            this.p1.slime.update();
-            this.p2.slime.update();
+            this.ball.update();     // move ball
+            this.p1.update();       // update slime vector (key pressed)
+            this.p2.update();       // update slime vector (key pressed)
+            this.p1.slime.update(); // move slime
+            this.p2.slime.update(); // move slime
 
             this.writeCoords(this.p1);
             this.writeCoords(this.p2);
         } catch (IOException ioe) {
             System.err.println(ioe);
             this.cancel();              // Timer abbrechen, nach IO-Error whs keine vernünftige Kommunikation mehr möglich
-            
+
             try {
                 this.p1.socket.close();
                 this.p2.socket.close();
-            } catch(IOException ioe2) {
+            } catch (IOException ioe2) {
                 System.err.println(ioe2);
             }
         }
@@ -127,19 +135,19 @@ public class ServerWorker extends TimerTask {
         if (v1.squarelength() <= ball_slime_diff * ball_slime_diff) {
             this.reflectBallFromSlime(v1);
         }
-        
+
         // Kollision von Slime 2 mit Ball
         if (v2.squarelength() <= ball_slime_diff * ball_slime_diff) {
             this.reflectBallFromSlime(v2);
         }
 
         // Kollision von Ball mit linker oder rechter Wand
-        if(this.ball.getXCoord() <= 0 || this.ball.getXCoord() >= Client.BOARD_WIDTH) {
+        if (this.ball.getXCoord() <= 0 || this.ball.getXCoord() >= Client.BOARD_WIDTH) {
             this.ball.getVector().changeXDir();
         }
 
         // Kollision von Ball mit "Himmel" oder Boden
-        if(this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.FLOOR) {
+        if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.FLOOR) {
             this.ball.getVector().changeYDir();
         }
 

@@ -3,7 +3,6 @@ package slimesoccer;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
-import javax.swing.JPanel;
 
 /**
  *
@@ -21,7 +20,7 @@ public class Goal extends MoveAble {
             this.img = Toolkit.getDefaultToolkit().getImage("res/right.png");
             this.x = client.Client.BOARD_WIDTH - this.img.getWidth(null);
         }
-        this.y = 480 - this.img.getHeight(null);
+        this.y = Board.FLOOR - this.img.getHeight(null);
     }
 
     public void draw(Graphics g) {

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 /**
  * @TODO   richtige Dimension für Slime.SLIME_RADIUS finden
+ * @TODO   verschiedene farben ^^
  * @author 3BHDV - Timo Hinterleitner
  * @author 3BHDV - Martin Kamleithner
  */
@@ -55,6 +56,14 @@ public class Slime extends MoveAble {
         this.color = color == null ? Color.RED : color;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
     public void draw(Graphics g) {
         g.setColor(color);
         g.fillArc(x, y, Math.round(SLIME_RADIUS), Math.round(SLIME_RADIUS), 0, 180);

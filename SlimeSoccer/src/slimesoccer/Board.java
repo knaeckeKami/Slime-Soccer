@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @todo goal, slime, name, etc in Player-Objekt auslagern! (übersichtlichkeit und so ^^)
+ * @todo goal, slime, name, etc in Player-Objekt auslagern! (übersichtlichkeit und so ^^) aber nur wenn speed dadurch nicht beeinflusst wird
  * 
  * @author 3BHDV - Timo Hinterleitner
  * @author 3BHDV - Martin Kamleithner
@@ -24,6 +24,8 @@ import javax.swing.JPanel;
 public class Board extends JPanel {
 
     public static final int FLOOR = 480;
+    public static final int SLIME_FLOOR = (int)(Board.FLOOR - Slime.SLIME_RADIUS/2);      // weil der anscheinend a rechteck übern slime legt, und des eck links oben 0/0 is..
+                                                                                          // anscheinend zeichnet der in GANZEN kreis, bzw legt zumindest des rechteck so drüber als wärs a ganzer.. FAIL
     public static final int GOAL_DISPLAY_HEIGHT = 800;
     private Ball ball;
     private Goal leftGoal;
@@ -52,6 +54,8 @@ public class Board extends JPanel {
         this.player = new Slime();
         this.enemy = new Slime();
         this.ball = new Ball(Ball.STANDARD_RADIUS);
+        this.leftGoal = new Goal(true);
+        this.rightGoal = new Goal(false);
 //        this.addKeyListener(new ArrowKeyListener(this.dout));
     }
 
@@ -62,6 +66,8 @@ public class Board extends JPanel {
         this.player = new Slime();
         this.enemy = new Slime();
         this.ball = new Ball(Ball.STANDARD_RADIUS);
+        this.leftGoal = new Goal(true);
+        this.rightGoal = new Goal(false);
 
         try {
             this.din = new DataInputStream(server.getInputStream());
@@ -85,9 +91,11 @@ public class Board extends JPanel {
         g.fillRect(0, Board.FLOOR, this.getWidth(), Board.FLOOR);
 
         //Slimes, Ball zeichnen
-        enemy.draw(g);
-        player.draw(g);
-        ball.draw(g);
+        this.enemy.draw(g);
+        this.player.draw(g);
+        this.ball.draw(g);
+        this.leftGoal.draw(g);
+        this.rightGoal.draw(g);
 
         //Tore zeichnen
         g.drawString(Integer.toString(ownGoals), 50, Board.GOAL_DISPLAY_HEIGHT);
@@ -122,10 +130,10 @@ public class Board extends JPanel {
                 try {
                     //Commandobyte lesen
                     serverCommand = Board.this.din.read();
-                    System.out.println("Debug:  readbyte " + serverCommand);
+//                    System.out.println("Debug:  readbyte " + serverCommand);
                     switch (serverCommand) {
                         case Constants.TYPE_COORDS:
-                            System.out.println("Debug: Update Coords");
+//                            System.out.println("Debug: Update Coords");
                             /**
                              * PROBLEM: 
                              * Wie liest man jetzt am besten
