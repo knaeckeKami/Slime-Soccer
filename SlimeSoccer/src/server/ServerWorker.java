@@ -133,13 +133,13 @@ public class ServerWorker extends TimerTask {
                 this.ball.getYCoord() - this.p2.slime.getYCoord());
 
         // Kollission von Slime 1 mit Ball
-        if (v1.squarelength() <= ball_slime_diff * ball_slime_diff) {
-            this.reflectBallFromSlime(v1);
+        if (v1.squarelength() <= (ball_slime_diff * ball_slime_diff)) {
+            this.reflectBallFromSlime(v1, p1.slime);
         }
 
         // Kollision von Slime 2 mit Ball
-        if (v2.squarelength() <= ball_slime_diff * ball_slime_diff) {
-            this.reflectBallFromSlime(v2);
+        if (v2.squarelength() <= (ball_slime_diff * ball_slime_diff)) {
+            this.reflectBallFromSlime(v2, p2.slime);
         }
 
         // Kollision von Ball mit linker oder rechter Wand
@@ -173,7 +173,7 @@ public class ServerWorker extends TimerTask {
      * austritt = (2 * lot + Einfallsvector)
      * austritt = 2 * lot + this.ball.getVector()
      */
-    private void reflectBallFromSlime(Vector2D slimeToBall) {
+    private void reflectBallFromSlime(Vector2D slimeToBall, Slime collisionSlime) {
         System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_RADIUS);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
@@ -182,6 +182,8 @@ public class ServerWorker extends TimerTask {
         //Also vom Austrittsvektor dein Einheitsvektor, multiplizieren mit der alten länge des balls
         //-> Länge eintrittsvektor = länge austrittsvektor            |Ab hier neu   
         Vector2D austritt = lot.multiply(2).add(this.ball.getVector()).einheitsVector().multiply(ball.getVector().length());
+        //Bewegung des Slimes berücksichtigen
+        austritt.add(collisionSlime.getVector());
         this.ball.setVector(austritt);
         System.out.println("vektor nachher:" +austritt);
     }
