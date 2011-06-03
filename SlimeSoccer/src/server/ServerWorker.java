@@ -92,12 +92,14 @@ public class ServerWorker extends TimerTask {
                 this.p1.slime.getVector().add(Vector2D.GRAVITY);
             } else if(this.p1.slime.getYCoord() >= Board.SLIME_FLOOR) {
                 this.p1.slime.getVector().setY(0);
+                this.p1.slime.setYCoord(Board.SLIME_FLOOR);
             }
             
             if (this.p2.slime.getYCoord() < Board.SLIME_FLOOR) {
                 this.p2.slime.getVector().add(Vector2D.GRAVITY);
             }else if(this.p2.slime.getYCoord() >= Board.SLIME_FLOOR) {
                 this.p2.slime.getVector().setY(0);
+                 this.p2.slime.setYCoord(Board.SLIME_FLOOR);
             }
 
             this.ball.update();     // move ball
@@ -129,7 +131,7 @@ public class ServerWorker extends TimerTask {
      * Dabei wird der Vector des Balles entsprechend angepasst
      */
     private void checkCollisions() {
-        float ball_slime_diff = Ball.STANDARD_RADIUS + Slime.SLIME_RADIUS/2;
+        float ball_slime_diff = Ball.STANDARD_RADIUS + Slime.SLIME_RADIUS;
         Vector2D v1 = new Vector2D(this.ball.getXCoord() - this.p1.slime.getXCoord(),
                 this.ball.getYCoord() - this.p1.slime.getYCoord());
         Vector2D v2 = new Vector2D(this.ball.getXCoord() - this.p2.slime.getXCoord(),
