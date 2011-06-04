@@ -2,6 +2,7 @@ package slimesoccer;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.ImageObserver;
 
 /**
  * @TODO   richtige Dimension für Slime.SLIME_RADIUS finden
@@ -68,4 +69,6 @@ public class Slime extends MoveAble {
         g.setColor(color);
         g.fillArc(Math.round(x), Math.round(y), Math.round(SLIME_RADIUS), Math.round(SLIME_RADIUS), 0, 180);
     }
+
+   
 }

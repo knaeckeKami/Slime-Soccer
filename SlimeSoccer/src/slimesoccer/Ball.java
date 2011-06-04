@@ -2,6 +2,7 @@ package slimesoccer;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.ImageObserver;
 
 /**
  *
@@ -46,5 +47,9 @@ public class Ball extends MoveAble {
         int roundedRadius=Math.round(radius);
         
         g.fillArc(Math.round(x),Math.round(y), roundedRadius, roundedRadius, 0, 360);
+    }
+
+    public void draw(Graphics g, ImageObserver io) {
+        draw(g);
     }
 }

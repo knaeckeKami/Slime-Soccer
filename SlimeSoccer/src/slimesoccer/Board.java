@@ -1,5 +1,7 @@
 package slimesoccer;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,6 +13,10 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedCharacterIterator.Attribute;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -26,7 +32,7 @@ public class Board extends JPanel {
     public static final int FLOOR = 480;
     public static final int SLIME_FLOOR = (int)(Board.FLOOR - Slime.SLIME_RADIUS/2);      // weil der anscheinend a rechteck übern slime legt, und des eck links oben 0/0 is..
                                                                                           // anscheinend zeichnet der in GANZEN kreis, bzw legt zumindest des rechteck so drüber als wärs a ganzer.. FAIL
-    public static final int GOAL_DISPLAY_HEIGHT = 800;
+    public static final int GOAL_DISPLAY_HEIGHT = 40;
     private Ball ball;
     private Goal leftGoal;
     private Goal rightGoal;
@@ -68,7 +74,7 @@ public class Board extends JPanel {
         this.ball = new Ball(Ball.STANDARD_RADIUS);
         this.leftGoal = new Goal(true);
         this.rightGoal = new Goal(false);
-
+        
         try {
             this.din = new DataInputStream(server.getInputStream());
             this.dout = new DataOutputStream(server.getOutputStream());
@@ -96,8 +102,14 @@ public class Board extends JPanel {
         this.ball.draw(g);
         this.leftGoal.draw(g);
         this.rightGoal.draw(g);
-
+        //g.drawImage(leftGoal.img, Math.round(leftGoal.x), Math.round(leftGoal.y), this);
+        //g.drawImage(rightGoal.img, Math.round(rightGoal.x), Math.round(rightGoal.y), this);
+       
+        
         //Tore zeichnen
+        g.setColor(Color.BLACK);
+        //Font.decode = Performancekiller
+        g.setFont(Font.decode("GoalString-COURIER_NEW-36"));
         g.drawString(Integer.toString(ownGoals), 50, Board.GOAL_DISPLAY_HEIGHT);
         g.drawString(Integer.toString(enemyGoals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
 

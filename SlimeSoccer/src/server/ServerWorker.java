@@ -179,18 +179,18 @@ public class ServerWorker extends TimerTask {
      * austritt = 2 * lot + this.ball.getVector()
      */
     private void reflectBallFromSlime(Vector2D slimeToBall, Slime collisionSlime) {
-        System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
+        //System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_RADIUS);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
         Vector2D lot = r.einheitsVector().multiply(L);
         //Changed: Berechnung allgemein hat gestimmt, aber die länge des austrittvektors nicht
-        //Also vom Austrittsvektor dein Einheitsvektor, multiplizieren mit der alten länge des balls
+        //Also vom Austrittsvektor den Einheitsvektor, multiplizieren mit der alten länge des balls
         //-> Länge eintrittsvektor = länge austrittsvektor            |Ab hier neu   
         Vector2D austritt = lot.multiply(2).add(this.ball.getVector()).einheitsVector().multiply(ball.getVector().length());
         //Bewegung des Slimes berücksichtigen
         austritt.add(collisionSlime.getVector());
         this.ball.setVector(austritt);
-        System.out.println("vektor nachher:" +austritt);
+        //System.out.println("vektor nachher:" +austritt);
     }
 
     private void writeCoords(Player p) throws IOException {
