@@ -52,4 +52,12 @@ public class Ball extends MoveAble {
     public void draw(Graphics g, ImageObserver io) {
         draw(g);
     }
+       public float getMiddleX() {
+        return x + Ball.BALL_RADIUS / 2;
+    }
+
+    public float getMiddleY() {
+        return y + Ball.BALL_RADIUS / 2;
+    }
+    
 }

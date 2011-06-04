@@ -15,7 +15,9 @@ public class ServerWorker extends TimerTask {
     private Ball ball;
     private Player p1;
     private Player p2;
-    private int[] goals = new int[2];
+    private int[] goals = new int[2]; //Wozu?
+    private Goal rightGoal, leftGoal;
+  
 
     /**
      *
@@ -25,14 +27,15 @@ public class ServerWorker extends TimerTask {
      */
     public ServerWorker(Socket p1Socket, Socket p2Socket) throws IOException {
         this.ball = new Ball(Client.BOARD_WIDTH / 2, Client.BOARD_HEIGHT / 2, Ball.BALL_RADIUS);
-
+        this.leftGoal = new Goal(true);
+        this.rightGoal = new Goal(false);
         this.p1 = new Player(1, p1Socket);
         this.p2 = new Player(2, p2Socket);
 
         this.p1.enemy = this.p2;
         this.p2.enemy = this.p1;
 
-
+        
         // Sending names of competitors
         this.p1.dos.writeByte(Constants.TYPE_NAME);
         this.p1.dos.writeBytes(this.p1.name + "\n");
@@ -87,7 +90,7 @@ public class ServerWorker extends TimerTask {
                 // damit da ball ned "unendlich" lang herumhüpft, bzw dann genau auf floorlevel is
                 // wenn ball langsam is, und in bodennähe => leg ihn ruhig am boden ^^
                 // perfekten werte sollt ma durch ausprobieren finden ^^
-                if (Math.abs(this.ball.getVector().getY()) < 1 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
+                if (Math.abs(this.ball.getVector().getY()) < 3 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
                     System.out.println("Hinlegen:" + ball.getVector().getY());
                     this.ball.setYCoord(Board.BALL_FLOOR);
                     this.ball.getVector().setY(0);
@@ -143,10 +146,12 @@ public class ServerWorker extends TimerTask {
         
      
        
-        Vector2D v1 = new Vector2D((this.ball.getXCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getXCoord()+Slime.SLIME_RADIUS/2),
+       /* Vector2D v1 = new Vector2D((this.ball.getXCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getXCoord()+Slime.SLIME_RADIUS/2),
                 (this.ball.getYCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getYCoord()+Slime.SLIME_RADIUS/2));
         Vector2D v2 = new Vector2D(this.ball.getXCoord()+Ball.BALL_RADIUS/2 - this.p2.slime.getXCoord()-Slime.SLIME_RADIUS/2,
-                this.ball.getYCoord()+Ball.BALL_RADIUS/2 - this.p2.slime.getYCoord()-Slime.SLIME_RADIUS/2);
+                this.ball.getYCoord()+Ball.BALL_RADIUS/2 - this.p2.slime.getYCoord()-Slime.SLIME_RADIUS/2);*/
+        Vector2D v1 = new Vector2D(this.ball.getMiddleX()-p1.slime.getMiddleX(),this.ball.getMiddleY()-p1.slime.getMiddleY());
+        Vector2D v2 = new Vector2D(this.ball.getMiddleX()-p2.slime.getMiddleX(),this.ball.getMiddleY()-p2.slime.getMiddleY());
 
         System.out.println(this.p1.slime.getYCoord() + " " + this.ball.getYCoord());
 
@@ -170,6 +175,11 @@ public class ServerWorker extends TimerTask {
         if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.BALL_FLOOR) {
             this.ball.getVector().changeYDir();
             //this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
+        
+        }
+        //Kollison von Ball mit Torstange rechts
+        if(ball.getMiddleX()>=this.rightGoal.getXCoord() && Math.abs((this.rightGoal.getYCoord()-this.ball.getMiddleY()))<Ball.BALL_RADIUS/2){
+            this.ball.getVector().changeYDir();
         }
 
     }

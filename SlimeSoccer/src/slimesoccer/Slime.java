@@ -82,4 +82,19 @@ public class Slime extends MoveAble {
             this.x = client.Client.BOARD_WIDTH - Slime.SLIME_RADIUS;
         }
     }
+    
+    /**
+     * Liefert X Koordinate des Mittelpunkt
+     * 
+     */
+    public float getMiddleX() {
+        return x + Slime.SLIME_RADIUS / 2;
+    }
+     /**
+     * Liefert Y Koordinate des Mittelpunkt
+     * 
+     */
+    public float getMiddleY() {
+        return y + Slime.SLIME_RADIUS / 2;
+    }
 }

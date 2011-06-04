@@ -95,4 +95,6 @@ public abstract class MoveAble implements Drawable {
         this.x += vector.getX();
         this.y += vector.getY();
     }
+
+ 
 }
