@@ -10,7 +10,7 @@ import java.awt.image.ImageObserver;
  */
 public class Ball extends MoveAble {
 
-    public static final float STANDARD_RADIUS = 25;
+    public static final float BALL_RADIUS = 25;
 
     private float radius;
     private Color color;

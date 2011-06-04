@@ -24,7 +24,7 @@ public class ServerWorker extends TimerTask {
      * @throws IOException
      */
     public ServerWorker(Socket p1Socket, Socket p2Socket) throws IOException {
-        this.ball = new Ball(Client.BOARD_WIDTH / 2, Client.BOARD_HEIGHT / 2, Ball.STANDARD_RADIUS);
+        this.ball = new Ball(Client.BOARD_WIDTH / 2, Client.BOARD_HEIGHT / 2, Ball.BALL_RADIUS);
 
         this.p1 = new Player(1, p1Socket);
         this.p2 = new Player(2, p2Socket);
@@ -80,26 +80,32 @@ public class ServerWorker extends TimerTask {
             this.checkCollisions();
 
             // handle gravity
-            if (this.ball.getYCoord() < Board.FLOOR) {
+            if (this.ball.getYCoord() < Board.BALL_FLOOR) {
                 this.ball.getVector().add(Vector2D.GRAVITY);
                 this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_AIR);
-            } else if(this.ball.getYCoord() >= Board.FLOOR) {
-                this.ball.getVector().changeYDir();
-                //this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
+            } else {
+                // damit da ball ned "unendlich" lang herumhüpft, bzw dann genau auf floorlevel is
+                // wenn ball langsam is, und in bodennähe => leg ihn ruhig am boden ^^
+                // perfekten werte sollt ma durch ausprobieren finden ^^
+                if (Math.abs(this.ball.getVector().getY()) < 2 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
+                    this.ball.setYCoord(Board.BALL_FLOOR);
+                    this.ball.getVector().setY(0);
+                }
+                this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
             }
-                
+
             if (this.p1.slime.getYCoord() < Board.SLIME_FLOOR) {
                 this.p1.slime.getVector().add(Vector2D.GRAVITY);
-            } else if(this.p1.slime.getYCoord() >= Board.SLIME_FLOOR) {
+            } else if (this.p1.slime.getYCoord() >= Board.SLIME_FLOOR) {
                 this.p1.slime.getVector().setY(0);
                 this.p1.slime.setYCoord(Board.SLIME_FLOOR);
             }
-            
+
             if (this.p2.slime.getYCoord() < Board.SLIME_FLOOR) {
                 this.p2.slime.getVector().add(Vector2D.GRAVITY);
-            }else if(this.p2.slime.getYCoord() >= Board.SLIME_FLOOR) {
+            } else if (this.p2.slime.getYCoord() >= Board.SLIME_FLOOR) {
                 this.p2.slime.getVector().setY(0);
-                 this.p2.slime.setYCoord(Board.SLIME_FLOOR);
+                this.p2.slime.setYCoord(Board.SLIME_FLOOR);
             }
 
             this.ball.update();     // move ball
@@ -107,9 +113,9 @@ public class ServerWorker extends TimerTask {
             this.p2.update();       // update slime vector (key pressed)
             this.p1.slime.update(); // move slime
             this.p2.slime.update(); // move slime
-            
-            System.out.println("Ball Vektor:" +ball.getVector());
-            
+
+//            System.out.println("Ball Vektor:" + ball.getVector());
+
             this.writeCoords(this.p1);
             this.writeCoords(this.p2);
         } catch (IOException ioe) {
@@ -131,11 +137,13 @@ public class ServerWorker extends TimerTask {
      * Dabei wird der Vector des Balles entsprechend angepasst
      */
     private void checkCollisions() {
-        float ball_slime_diff = Ball.STANDARD_RADIUS + Slime.SLIME_RADIUS;
+        float ball_slime_diff = Ball.BALL_RADIUS + Slime.SLIME_RADIUS;
         Vector2D v1 = new Vector2D(this.ball.getXCoord() - this.p1.slime.getXCoord(),
                 this.ball.getYCoord() - this.p1.slime.getYCoord());
         Vector2D v2 = new Vector2D(this.ball.getXCoord() - this.p2.slime.getXCoord(),
                 this.ball.getYCoord() - this.p2.slime.getYCoord());
+
+        System.out.println(this.p1.slime.getYCoord() + " " + this.ball.getYCoord());
 
         // Kollission von Slime 1 mit Ball
         if (v1.squarelength() <= (ball_slime_diff * ball_slime_diff)) {
@@ -153,7 +161,7 @@ public class ServerWorker extends TimerTask {
         }
 
         // Kollision von Ball mit "Himmel" oder Boden
-        if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.SLIME_FLOOR) {
+        if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.BALL_FLOOR) {
             this.ball.getVector().changeYDir();
             //this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
         }
@@ -197,15 +205,15 @@ public class ServerWorker extends TimerTask {
         p.dos.writeByte(Constants.TYPE_COORDS);
 
         // x,y vom Ball
-        p.dos.writeInt((int)this.ball.getXCoord());
-        p.dos.writeInt((int)this.ball.getYCoord());
+        p.dos.writeInt((int) this.ball.getXCoord());
+        p.dos.writeInt((int) this.ball.getYCoord());
 
         // x,y vom eigenen Spieler
-        p.dos.writeInt((int)p.slime.getXCoord());
-        p.dos.writeInt((int)p.slime.getYCoord());
+        p.dos.writeInt((int) p.slime.getXCoord());
+        p.dos.writeInt((int) p.slime.getYCoord());
 
         // x,y vom anderen Spieler
-        p.dos.writeInt((int)p.enemy.slime.getXCoord());
-        p.dos.writeInt((int)p.enemy.slime.getYCoord());
+        p.dos.writeInt((int) p.enemy.slime.getXCoord());
+        p.dos.writeInt((int) p.enemy.slime.getYCoord());
     }
 }

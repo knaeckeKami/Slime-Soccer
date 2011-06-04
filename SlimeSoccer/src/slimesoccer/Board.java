@@ -32,6 +32,7 @@ public class Board extends JPanel {
     public static final int FLOOR = 480;
     public static final int SLIME_FLOOR = (int)(Board.FLOOR - Slime.SLIME_RADIUS/2);      // weil der anscheinend a rechteck übern slime legt, und des eck links oben 0/0 is..
                                                                                           // anscheinend zeichnet der in GANZEN kreis, bzw legt zumindest des rechteck so drüber als wärs a ganzer.. FAIL
+    public static final int BALL_FLOOR = (int)(Board.FLOOR - Ball.BALL_RADIUS);
     public static final int GOAL_DISPLAY_HEIGHT = 40;
     private Ball ball;
     private Goal leftGoal;
@@ -59,9 +60,11 @@ public class Board extends JPanel {
         this.setSize(width, height);
         this.player = new Slime();
         this.enemy = new Slime();
-        this.ball = new Ball(Ball.STANDARD_RADIUS);
+        this.ball = new Ball(Ball.BALL_RADIUS);
         this.leftGoal = new Goal(true);
         this.rightGoal = new Goal(false);
+        this.setOpaque(true);
+        this.setBackground(Color.DARK_GRAY);
 //        this.addKeyListener(new ArrowKeyListener(this.dout));
     }
 
@@ -71,9 +74,12 @@ public class Board extends JPanel {
         this.server = server;
         this.player = new Slime();
         this.enemy = new Slime();
-        this.ball = new Ball(Ball.STANDARD_RADIUS);
+        this.ball = new Ball(Ball.BALL_RADIUS);
         this.leftGoal = new Goal(true);
         this.rightGoal = new Goal(false);
+        
+        this.player.setColor(Color.BLUE);
+        this.enemy.setColor(Color.GREEN);
         
         try {
             this.din = new DataInputStream(server.getInputStream());
@@ -100,8 +106,10 @@ public class Board extends JPanel {
         this.enemy.draw(g);
         this.player.draw(g);
         this.ball.draw(g);
-        this.leftGoal.draw(g);
-        this.rightGoal.draw(g);
+        this.leftGoal.draw(g, this);
+        this.rightGoal.draw(g, this);
+        
+        g.drawLine((int)this.player.x, (int)this.player.y, (int)this.ball.x, (int)this.ball.y);
         //g.drawImage(leftGoal.img, Math.round(leftGoal.x), Math.round(leftGoal.y), this);
         //g.drawImage(rightGoal.img, Math.round(rightGoal.x), Math.round(rightGoal.y), this);
        
@@ -112,7 +120,6 @@ public class Board extends JPanel {
         g.setFont(Font.decode("GoalString-COURIER_NEW-36"));
         g.drawString(Integer.toString(ownGoals), 50, Board.GOAL_DISPLAY_HEIGHT);
         g.drawString(Integer.toString(enemyGoals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
-
     }
 
     /**

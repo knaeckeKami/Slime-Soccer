@@ -37,7 +37,6 @@ public class Player {
 
         switch (number) {
             case 1:
-                // Sollte jetzt eigentlich ÜBER dem floor sein, auch wenn "nach unten" gezeichnet wird.. tut aber ned -.-
                 this.slime = new Slime(Board.WIDTH / 4, Board.SLIME_FLOOR);
                 break;
             case 2:
@@ -114,7 +113,7 @@ public class Player {
      * @param pressed true wenn gedrückt, false wenn nicht
      */
     public void setKeystatus(int keycode, boolean pressed) {
-        System.out.println("Debug: Player(" + number + ") set key status " + keycode + " to " + pressed);
+//        System.out.println("Debug: Player(" + number + ") set key status " + keycode + " to " + pressed);
         this.keys[keycode - 0x25] = pressed;    // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
     }
 
@@ -137,7 +136,7 @@ public class Player {
         } else {
             this.slime.getVector().setX(0);
         }
-        if(this.keys[KeyEvent.VK_UP - 0x25] && this.slime.getYCoord() == Board.SLIME_FLOOR) {     // springen nur erlauben, wenn slime am boden
+        if(this.keys[KeyEvent.VK_UP - 0x25] && Math.abs(this.slime.getYCoord() - Board.SLIME_FLOOR) < 0.01) {     // springen nur erlauben, wenn slime am boden
             this.slime.getVector().setY(-4);
         }
     }
