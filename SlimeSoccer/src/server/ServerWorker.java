@@ -87,11 +87,13 @@ public class ServerWorker extends TimerTask {
                 // damit da ball ned "unendlich" lang herumhüpft, bzw dann genau auf floorlevel is
                 // wenn ball langsam is, und in bodennähe => leg ihn ruhig am boden ^^
                 // perfekten werte sollt ma durch ausprobieren finden ^^
-                if (Math.abs(this.ball.getVector().getY()) < 2 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
+                if (Math.abs(this.ball.getVector().getY()) < 1 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
+                    System.out.println("Hinlegen:" + ball.getVector().getY());
                     this.ball.setYCoord(Board.BALL_FLOOR);
                     this.ball.getVector().setY(0);
+                    this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
                 }
-                this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
+                
             }
 
             if (this.p1.slime.getYCoord() < Board.SLIME_FLOOR) {
@@ -137,16 +139,20 @@ public class ServerWorker extends TimerTask {
      * Dabei wird der Vector des Balles entsprechend angepasst
      */
     private void checkCollisions() {
-        float ball_slime_diff = Ball.BALL_RADIUS + Slime.SLIME_RADIUS;
-        Vector2D v1 = new Vector2D(this.ball.getXCoord() - this.p1.slime.getXCoord(),
-                this.ball.getYCoord() - this.p1.slime.getYCoord());
-        Vector2D v2 = new Vector2D(this.ball.getXCoord() - this.p2.slime.getXCoord(),
-                this.ball.getYCoord() - this.p2.slime.getYCoord());
+        float ball_slime_diff = (Ball.BALL_RADIUS + Slime.SLIME_RADIUS)/2;
+        
+     
+       
+        Vector2D v1 = new Vector2D((this.ball.getXCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getXCoord()+Slime.SLIME_RADIUS/2),
+                (this.ball.getYCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getYCoord()+Slime.SLIME_RADIUS/2));
+        Vector2D v2 = new Vector2D(this.ball.getXCoord()+Ball.BALL_RADIUS/2 - this.p2.slime.getXCoord()-Slime.SLIME_RADIUS/2,
+                this.ball.getYCoord()+Ball.BALL_RADIUS/2 - this.p2.slime.getYCoord()-Slime.SLIME_RADIUS/2);
 
         System.out.println(this.p1.slime.getYCoord() + " " + this.ball.getYCoord());
 
         // Kollission von Slime 1 mit Ball
         if (v1.squarelength() <= (ball_slime_diff * ball_slime_diff)) {
+        
             this.reflectBallFromSlime(v1, p1.slime);
         }
 
@@ -188,6 +194,13 @@ public class ServerWorker extends TimerTask {
      */
     private void reflectBallFromSlime(Vector2D slimeToBall, Slime collisionSlime) {
         //System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
+        //Wenn sich Ball nicht bewegt, und der Slime berührt den Ball -> Division durch null und so^^
+        //Ich hab in diesem Fall den Ballvektor auf den Slimevektor gesetzt.
+           if(ball.getVector().squarelength()==0){
+            ball.getVector().setXY(collisionSlime.getVector().getX(),collisionSlime.getVector().getY());
+            return;
+        }
+        
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_RADIUS);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
         Vector2D lot = r.einheitsVector().multiply(L);

@@ -109,7 +109,7 @@ public class Board extends JPanel {
         this.leftGoal.draw(g, this);
         this.rightGoal.draw(g, this);
         
-        g.drawLine((int)this.player.x, (int)this.player.y, (int)this.ball.x, (int)this.ball.y);
+        g.drawLine((int)(this.player.x+Slime.SLIME_RADIUS/2), (int)(this.player.y+Slime.SLIME_RADIUS/2), (int)(this.ball.x+Ball.BALL_RADIUS/2), (int)(this.ball.y+Ball.BALL_RADIUS/2));
         //g.drawImage(leftGoal.img, Math.round(leftGoal.x), Math.round(leftGoal.y), this);
         //g.drawImage(rightGoal.img, Math.round(rightGoal.x), Math.round(rightGoal.y), this);
        
@@ -134,10 +134,7 @@ public class Board extends JPanel {
         private ByteBuffer byteBuf = ByteBuffer.wrap(positions);
         private IntBuffer intBuf = byteBuf.asIntBuffer(); //Damit kann man das byte[] mehr oder weniger als int[] betrachten
 
-        /**
-         * Wah manchmal hasse ich es das Java keine Pointer hat... in C wäre das um einiges einfacher, binär lesen
-         * dann halt als int oder whatever interpretieren.. </flame>
-         */
+      
         @Override
         public void run() {
 
