@@ -12,11 +12,14 @@ import java.awt.image.ImageObserver;
  */
 public class Slime extends MoveAble {
 
-    /* Der Radius des Halbkreises, der den Slime darstellt 
-     * 50 ist eine "Hausnummer", richtiger Wert muss noch gefunden werden.
-     * @TODO 
+    /**
+     * Die Diagonale, also der doppelte Radius, des Slimes.
      */
-    public static final float SLIME_RADIUS = 50;
+    public static final float SLIME_DIAGONALE = 50;
+    /**
+     * Der Radius des Slimes.
+     */
+    public static final float SLIME_RADIUS= SLIME_DIAGONALE/2;
     //Die Farbe des Slimes.
     private Color color;
 
@@ -70,31 +73,31 @@ public class Slime extends MoveAble {
 
     public void draw(Graphics g) {
         g.setColor(color);
-        g.fillArc(Math.round(x), Math.round(y), Math.round(SLIME_RADIUS), Math.round(SLIME_RADIUS), 0, 180);
+        g.fillArc(Math.round(x), Math.round(y), Math.round(SLIME_DIAGONALE), Math.round(SLIME_DIAGONALE), 0, 180);
     }
 
     @Override
     public void update() {
         super.update();
-        if (this.x < -Slime.SLIME_RADIUS) {
-            this.x = -Slime.SLIME_RADIUS;
-        } else if (this.x > client.Client.BOARD_WIDTH - Slime.SLIME_RADIUS) {
-            this.x = client.Client.BOARD_WIDTH - Slime.SLIME_RADIUS;
+        if (this.x < -Slime.SLIME_DIAGONALE) {
+            this.x = -Slime.SLIME_DIAGONALE;
+        } else if (this.x > client.Client.BOARD_WIDTH - Slime.SLIME_DIAGONALE) {
+            this.x = client.Client.BOARD_WIDTH - Slime.SLIME_DIAGONALE;
         }
     }
     
     /**
-     * Liefert X Koordinate des Mittelpunkt
+     * Liefert X Koordinate des Mittelpunkts
      * 
      */
     public float getMiddleX() {
-        return x + Slime.SLIME_RADIUS / 2;
+        return x + Slime.SLIME_RADIUS;
     }
      /**
-     * Liefert Y Koordinate des Mittelpunkt
+     * Liefert Y Koordinate des Mittelpunkts
      * 
      */
     public float getMiddleY() {
-        return y + Slime.SLIME_RADIUS / 2;
+        return y + Slime.SLIME_RADIUS;
     }
 }

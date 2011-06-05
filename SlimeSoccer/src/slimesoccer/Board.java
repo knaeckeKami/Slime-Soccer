@@ -30,9 +30,9 @@ import javax.swing.JPanel;
 public class Board extends JPanel {
 
     public static final int FLOOR = 480;
-    public static final int SLIME_FLOOR = (int)(Board.FLOOR - Slime.SLIME_RADIUS/2);      // weil der anscheinend a rechteck übern slime legt, und des eck links oben 0/0 is..
+    public static final int SLIME_FLOOR = (int)(Board.FLOOR - Slime.SLIME_DIAGONALE/2);      // weil der anscheinend a rechteck übern slime legt, und des eck links oben 0/0 is..
                                                                                           // anscheinend zeichnet der in GANZEN kreis, bzw legt zumindest des rechteck so drüber als wärs a ganzer.. FAIL
-    public static final int BALL_FLOOR = (int)(Board.FLOOR - Ball.BALL_RADIUS);
+    public static final int BALL_FLOOR = (int)(Board.FLOOR - Ball.BALL_DIAGONALE);
     public static final int GOAL_DISPLAY_HEIGHT = 40;
     private Ball ball;
     private Goal leftGoal;
@@ -60,7 +60,7 @@ public class Board extends JPanel {
         this.setSize(width, height);
         this.player = new Slime();
         this.enemy = new Slime();
-        this.ball = new Ball(Ball.BALL_RADIUS);
+        this.ball = new Ball(Ball.BALL_DIAGONALE);
         this.leftGoal = new Goal(true);
         this.rightGoal = new Goal(false);
         this.setOpaque(true);
@@ -74,7 +74,7 @@ public class Board extends JPanel {
         this.server = server;
         this.player = new Slime();
         this.enemy = new Slime();
-        this.ball = new Ball(Ball.BALL_RADIUS);
+        this.ball = new Ball(Ball.BALL_DIAGONALE);
         this.leftGoal = new Goal(true);
         this.rightGoal = new Goal(false);
         
@@ -109,12 +109,11 @@ public class Board extends JPanel {
         this.leftGoal.draw(g, this);
         this.rightGoal.draw(g, this);
         
-        g.drawLine((int)(this.player.x+Slime.SLIME_RADIUS/2), (int)(this.player.y+Slime.SLIME_RADIUS/2), (int)(this.ball.x+Ball.BALL_RADIUS/2), (int)(this.ball.y+Ball.BALL_RADIUS/2));
-        //g.drawImage(leftGoal.img, Math.round(leftGoal.x), Math.round(leftGoal.y), this);
-        //g.drawImage(rightGoal.img, Math.round(rightGoal.x), Math.round(rightGoal.y), this);
+        g.drawLine((int)(this.player.x+Slime.SLIME_DIAGONALE/2), (int)(this.player.y+Slime.SLIME_DIAGONALE/2), (int)(this.ball.x+Ball.BALL_DIAGONALE/2), (int)(this.ball.y+Ball.BALL_DIAGONALE/2));
+
        
         
-        //Tore zeichnen
+        //Toranzahl zeichnen
         g.setColor(Color.BLACK);
         //Font.decode = Performancekiller
         g.setFont(Font.decode("GoalString-COURIER_NEW-36"));

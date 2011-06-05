@@ -10,8 +10,14 @@ import java.awt.image.ImageObserver;
  */
 public class Ball extends MoveAble {
 
-    public static final float BALL_RADIUS = 25;
-
+    /**
+     * Die Standard-Diagonale, also der doppelte Radius, des Balls.
+     */
+    public static final float BALL_DIAGONALE = 25;
+    /**
+     * Der Standard-Radius des Balls.
+     */
+    public static final float BALL_RADIUS = BALL_DIAGONALE / 2;
     private float radius;
     private Color color;
 
@@ -44,20 +50,26 @@ public class Ball extends MoveAble {
 
     public void draw(Graphics g) {
         g.setColor(color);
-        int roundedRadius=Math.round(radius);
-        
-        g.fillArc(Math.round(x),Math.round(y), roundedRadius, roundedRadius, 0, 360);
+        int roundedRadius = Math.round(radius);
+
+        g.fillArc(Math.round(x), Math.round(y), roundedRadius, roundedRadius, 0, 360);
     }
 
     public void draw(Graphics g, ImageObserver io) {
         draw(g);
     }
-       public float getMiddleX() {
-        return x + Ball.BALL_RADIUS / 2;
+    /**
+     * Liefert X Koordinate des Mittelpunkts.
+     * @return 
+     */
+    public float getMiddleX() {
+        return x + Ball.BALL_RADIUS;
     }
-
+    /**
+     * Liefert Y Koordinate des Mittelpunkts.
+     * @return 
+     */
     public float getMiddleY() {
-        return y + Ball.BALL_RADIUS / 2;
+        return y + Ball.BALL_RADIUS;
     }
-    
 }

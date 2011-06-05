@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 public class Goal extends MoveAble {
 
     private Image img;
+    public static final int WIDTH= 74; //Breite in Pixel (Quelle: left.png)
+    public static final int HEIGHT=70; //Höhe in Pixel
 
     public Goal(boolean left) {
         if (left) {
