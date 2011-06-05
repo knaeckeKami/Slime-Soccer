@@ -7,7 +7,10 @@ import java.util.TimerTask;
 import slimesoccer.*;
 
 /**
- *
+ *  @todo known problem:
+ *      ball bleibt manchmal an rechter wand hängen, wtf?
+ *      tor is größer als eigentliches netz => daher problem beim zählen bzw abprallen
+ *      slimes sollten im eigenen tor starten
  * @author TicTacMoe
  */
 public class ServerWorker extends TimerTask {
@@ -15,8 +18,6 @@ public class ServerWorker extends TimerTask {
     private Ball ball;
     private Player p1;
     private Player p2;
-    private int[] goals = new int[2]; //Wozu?
-    private Goal rightGoal, leftGoal;
     private float BALL_SLIME_DIFF = Ball.BALL_RADIUS + Slime.SLIME_RADIUS;
     private float SQUARED_BALL_SLIME_DIFF = this.BALL_SLIME_DIFF * this.BALL_SLIME_DIFF;
 
@@ -28,8 +29,6 @@ public class ServerWorker extends TimerTask {
      */
     public ServerWorker(Socket p1Socket, Socket p2Socket) throws IOException {
         this.ball = new Ball(Client.BOARD_WIDTH / 2, Client.BOARD_HEIGHT / 2, Ball.BALL_DIAGONALE);
-        this.leftGoal = new Goal(true);
-        this.rightGoal = new Goal(false);
         this.p1 = new Player(1, p1Socket);
         this.p2 = new Player(2, p2Socket);
 
@@ -81,6 +80,7 @@ public class ServerWorker extends TimerTask {
                 }
             }
 
+            this.checkGoal();
             this.checkCollisions();
 
             // handle gravity
@@ -143,10 +143,6 @@ public class ServerWorker extends TimerTask {
      * Dabei wird der Vector des Balles entsprechend angepasst
      */
     private void checkCollisions() {
-
-
-
-
         /* Vector2D v1 = new Vector2D((this.ball.getXCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getXCoord()+Slime.SLIME_RADIUS/2),
         (this.ball.getYCoord()+Ball.BALL_RADIUS/2) - (this.p1.slime.getYCoord()+Slime.SLIME_RADIUS/2));
         Vector2D v2 = new Vector2D(this.ball.getXCoord()+Ball.BALL_RADIUS/2 - this.p2.slime.getXCoord()-Slime.SLIME_RADIUS/2,
@@ -154,11 +150,8 @@ public class ServerWorker extends TimerTask {
         Vector2D v1 = new Vector2D(this.ball.getMiddleX() - p1.slime.getMiddleX(), this.ball.getMiddleY() - p1.slime.getMiddleY());
         Vector2D v2 = new Vector2D(this.ball.getMiddleX() - p2.slime.getMiddleX(), this.ball.getMiddleY() - p2.slime.getMiddleY());
 
-        System.out.println(this.p1.slime.getYCoord() + " " + this.ball.getYCoord());
-
         // Kollission von Slime 1 mit Ball
         if (v1.squarelength() <= this.SQUARED_BALL_SLIME_DIFF) {
-
             this.reflectBallFromSlime(v1, p1.slime);
         }
 
@@ -175,32 +168,37 @@ public class ServerWorker extends TimerTask {
         // Kollision von Ball mit "Himmel" oder Boden
         if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.BALL_FLOOR) {
             this.ball.getVector().changeYDir();
-            //this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
-
         }
+
+        // Kollision von Ball mit Torlatte links
+        if (this.ball.getMiddleX() <= this.p1.goal.getXCoord() + this.p1.goal.getWidth() && Math.abs((this.p1.goal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS / 2) {
+            this.ball.getVector().changeYDir();
+        } //Kollison von Ball mit Torstange rechts
+        else if (this.ball.getMiddleX() >= this.p2.goal.getXCoord() && Math.abs((this.p2.goal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS / 2) {
+            this.ball.getVector().changeYDir();
+        }
+
+        // deine version ------------------------------------------------------------------------------------
+        // im praxistest hat meine version besser funktioniert (bei deiner is manchmal random weit ÜBER dem tor reflektiert worden,
+        // könnt allerdings auch an merge-conflicts liegen :/
         //Kollison von Ball mit Torstange rechts
-        // (Recycle v1, damit kein neuer Vektor erzeugt werden muss)
-        //Okay, v1 und v2 dürfen nicht recycled werden sonst geht gar nix mehr^^ auch wenn ich nicht versteh wieso, die dürften zu diesem Zeitpunkt eig nicht
-        //mehr gebraucht werden
-        Vector2D rightGoalBallVector = new Vector2D(rightGoal.getXCoord() - ball.getMiddleX(), rightGoal.getYCoord() - ball.getMiddleY());
-        //Von der Seite
-        if (rightGoalBallVector.squarelength() < Ball.BALL_RADIUS * Ball.BALL_RADIUS) {
-            ball.getVector().changeXDir();
-        }
-        //Von oben
-        if (ball.getMiddleX() >= this.rightGoal.getXCoord() && Math.abs((this.rightGoal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS) {
-            this.ball.getVector().changeYDir();
-        }
-
-        //Kollision Ball -> Torstange links
-        Vector2D leftGoalBallVector = new Vector2D(this.leftGoal.getXCoord() + Goal.WIDTH-ball.getMiddleX(), this.leftGoal.getYCoord()-ball.getMiddleY());
-        if (leftGoalBallVector.squarelength() < Ball.BALL_RADIUS * Ball.BALL_RADIUS) {
-            ball.getVector().changeXDir();
-        }
-           if (ball.getMiddleX() <= Goal.WIDTH && Math.abs((this.rightGoal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS) {
-            this.ball.getVector().changeYDir();
-        }
-
+//        Vector2D rightGoalBallVector = new Vector2D(rightGoal.getXCoord() - ball.getMiddleX(), rightGoal.getYCoord() - ball.getMiddleY());
+//        if (rightGoalBallVector.squarelength() < Ball.BALL_RADIUS * Ball.BALL_RADIUS) {
+//            ball.getVector().changeXDir();
+//        }
+//        //Von oben
+//        if (ball.getMiddleX() >= this.rightGoal.getXCoord() && Math.abs((this.rightGoal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS) {
+//            this.ball.getVector().changeYDir();
+//        }
+//
+//        //Kollision Ball -> Torstange links
+//        Vector2D leftGoalBallVector = new Vector2D(this.leftGoal.getXCoord() + Goal.WIDTH-ball.getMiddleX(), this.leftGoal.getYCoord()-ball.getMiddleY());
+//        if (leftGoalBallVector.squarelength() < Ball.BALL_RADIUS * Ball.BALL_RADIUS) {
+//            ball.getVector().changeXDir();
+//        }
+//           if (ball.getMiddleX() <= Goal.WIDTH && Math.abs((this.rightGoal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS) {
+//            this.ball.getVector().changeYDir();
+//        }
     }
 
     /**
@@ -241,6 +239,39 @@ public class ServerWorker extends TimerTask {
         austritt.add(collisionSlime.getVector());
         this.ball.setVector(austritt);
         //System.out.println("vektor nachher:" +austritt);
+    }
+
+    /**
+     * 
+     * @throws IOException 
+     */
+    private void checkGoal() throws IOException {
+        // Ball muss > 50% im Tor sein
+        if (this.ball.getMiddleX() < this.p1.goal.getXCoord() + this.p1.goal.getWidth() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p1.goal.getHeight()) {
+            this.p1.setGoalCounter(this.p1.getGoalCounter() + 1);
+
+            this.p1.dos.writeByte(Constants.TYPE_GOAL);
+            this.p1.dos.writeBoolean(true);                 // eigenes tor
+            this.p2.dos.writeByte(Constants.TYPE_GOAL);
+            this.p2.dos.writeBoolean(false);                // gegnerisches tor
+
+            this.resetBall();
+        } else if (this.ball.getMiddleX() > this.p2.goal.getXCoord() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p2.goal.getHeight()) {
+            this.p2.setGoalCounter(this.p2.getGoalCounter() + 1);
+
+            this.p2.dos.writeByte(Constants.TYPE_GOAL);
+            this.p2.dos.writeBoolean(true);                 // eigenes tor
+            this.p1.dos.writeByte(Constants.TYPE_GOAL);
+            this.p1.dos.writeBoolean(false);                // gegnerisches tor
+
+            this.resetBall();
+        }
+    }
+
+    private void resetBall() {
+        this.ball.setXCoord(Client.BOARD_WIDTH / 2);
+        this.ball.setYCoord(Client.BOARD_HEIGHT / 2);
+        this.ball.setVector(new Vector2D());
     }
 
     private void writeCoords(Player p) throws IOException {

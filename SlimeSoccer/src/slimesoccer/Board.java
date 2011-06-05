@@ -13,10 +13,6 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
-import java.text.AttributedCharacterIterator;
-import java.text.AttributedCharacterIterator.Attribute;
-import java.util.Map;
-import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -215,6 +211,7 @@ public class Board extends JPanel {
 
                 } catch (IOException ex) {
                     System.err.println("Fehler GameLoop: " + ex.getMessage());
+                    this.gameRunning = false;            // weil nach IO Error kein sinnvolles spielen mehr möglich ist
                 }
             }
         }

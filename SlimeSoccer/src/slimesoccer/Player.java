@@ -26,6 +26,7 @@ public class Player {
     public DataOutputStream dos;
     public String name;
     public Player enemy;
+    private int goals;
     public boolean[] keys = new boolean[3];
 
     public Player(int number, Socket socket) throws IOException {
@@ -104,7 +105,14 @@ public class Player {
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
+    
+    public void setGoalCounter(int counter) {
+        this.goals = counter;
+    }
 
+    public int getGoalCounter() {
+        return this.goals;
+    }
     /**
      * Setzt den Keystatus der Tasten
      * VK_LEFT, VK_UP, oder VK_RIGHT
@@ -137,7 +145,7 @@ public class Player {
             this.slime.getVector().setX(0);
         }
         if(this.keys[KeyEvent.VK_UP - 0x25] && Math.abs(this.slime.getYCoord() - Board.SLIME_FLOOR) < 0.01) {     // springen nur erlauben, wenn slime am boden
-            this.slime.getVector().setY(-4);
+            this.slime.getVector().setY(-6);
         }
     }
 }

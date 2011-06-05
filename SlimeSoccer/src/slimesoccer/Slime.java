@@ -19,7 +19,7 @@ public class Slime extends MoveAble {
     /**
      * Der Radius des Slimes.
      */
-    public static final float SLIME_RADIUS= SLIME_DIAGONALE/2;
+    public static final float SLIME_RADIUS = SLIME_DIAGONALE / 2;
     //Die Farbe des Slimes.
     private Color color;
 
@@ -85,7 +85,7 @@ public class Slime extends MoveAble {
             this.x = client.Client.BOARD_WIDTH - Slime.SLIME_DIAGONALE;
         }
     }
-    
+
     /**
      * Liefert X Koordinate des Mittelpunkts
      * 
@@ -93,7 +93,8 @@ public class Slime extends MoveAble {
     public float getMiddleX() {
         return x + Slime.SLIME_RADIUS;
     }
-     /**
+
+    /**
      * Liefert Y Koordinate des Mittelpunkts
      * 
      */

@@ -12,8 +12,8 @@ import javax.swing.ImageIcon;
 public class Goal extends MoveAble {
 
     private Image img;
-    public static final int WIDTH= 74; //Breite in Pixel (Quelle: left.png)
-    public static final int HEIGHT=70; //Höhe in Pixel
+    private int height;
+    private int width;
 
     public Goal(boolean left) {
         if (left) {
@@ -23,7 +23,9 @@ public class Goal extends MoveAble {
             this.img = new ImageIcon(this.getClass().getResource("../res/right.png")).getImage();
             this.x = client.Client.BOARD_WIDTH - this.img.getWidth(null);
         }
-        this.y = Board.FLOOR - this.img.getHeight(null);
+        this.height = img.getHeight(null);
+        this.width = img.getWidth(null);
+        this.y = Board.FLOOR - this.height;
     }
 
     public void draw(Graphics g, ImageObserver io) {
@@ -34,5 +36,11 @@ public class Goal extends MoveAble {
         this.draw(g, null);
     }
 
+    public int getHeight() {
+        return height;
+    }
 
+    public int getWidth() {
+        return width;
+    }
 }
