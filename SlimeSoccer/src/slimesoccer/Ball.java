@@ -31,6 +31,18 @@ public class Ball extends MoveAble {
     }
 
     /**
+     * Erzeugt einen neuen Ball, der auf (0/0) platziert ist und keine Bewegung
+     * aufweist (Vector 0/0)
+     * Die Farbe entspricht color
+     * @param radius Radius des Balls
+     * @param color Farbe des Balls
+     */
+    public Ball(float radius, Color color) {
+        this.radius = radius;
+        this.color = color;
+    }
+
+    /**
      * Erzeugt einen neuen Ball, der auf (x/y) platziert ist und keine Bewegung
      * aufweist (Vector 0/0)
      * @param x x-Koordinate des Balls
@@ -58,6 +70,7 @@ public class Ball extends MoveAble {
     public void draw(Graphics g, ImageObserver io) {
         draw(g);
     }
+
     /**
      * Liefert X Koordinate des Mittelpunkts.
      * @return 
@@ -65,6 +78,7 @@ public class Ball extends MoveAble {
     public float getMiddleX() {
         return x + Ball.BALL_RADIUS;
     }
+
     /**
      * Liefert Y Koordinate des Mittelpunkts.
      * @return 

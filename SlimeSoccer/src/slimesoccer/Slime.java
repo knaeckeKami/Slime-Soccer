@@ -2,7 +2,6 @@ package slimesoccer;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.ImageObserver;
 
 /**
  * @TODO   richtige Dimension für Slime.SLIME_RADIUS finden

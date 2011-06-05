@@ -4,6 +4,7 @@
  */
 package slimesoccer;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -26,7 +27,7 @@ public class Player {
     public DataOutputStream dos;
     public String name;
     public Player enemy;
-    private int goals;
+    public int goals;
     public boolean[] keys = new boolean[3];
 
     public Player(int number, Socket socket) throws IOException {
@@ -39,15 +40,18 @@ public class Player {
         switch (number) {
             case 1:
                 this.slime = new Slime(Board.WIDTH / 4, Board.SLIME_FLOOR);
+                this.slime.setColor(Color.WHITE);
                 break;
             case 2:
                 this.slime = new Slime(Board.WIDTH / 4 * 3, Board.SLIME_FLOOR);
+                this.slime.setColor(Color.GREEN);
             default:
                 break;
         }
-
-        this.dis = new DataInputStream(socket.getInputStream());
-        this.dos = new DataOutputStream(socket.getOutputStream());
+        if (socket != null) {
+            this.dis = new DataInputStream(socket.getInputStream());
+            this.dos = new DataOutputStream(socket.getOutputStream());
+        }
     }
 
     public Player getGegner() {
@@ -105,7 +109,7 @@ public class Player {
     public void setSocket(Socket socket) {
         this.socket = socket;
     }
-    
+
     public void setGoalCounter(int counter) {
         this.goals = counter;
     }
@@ -113,6 +117,7 @@ public class Player {
     public int getGoalCounter() {
         return this.goals;
     }
+
     /**
      * Setzt den Keystatus der Tasten
      * VK_LEFT, VK_UP, oder VK_RIGHT
@@ -125,7 +130,6 @@ public class Player {
         this.keys[keycode - 0x25] = pressed;    // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
     }
 
-
     /**
      * Liefert den Keystatus einer Taste (VK_LEFT, VK_UP, oder VK_RIGHT)
      * true wenn gedrückt, false wenn nicht
@@ -137,14 +141,14 @@ public class Player {
     }
 
     public void update() {
-        if(this.keys[KeyEvent.VK_LEFT - 0x25] && !this.keys[KeyEvent.VK_RIGHT - 0x25]) {
+        if (this.keys[KeyEvent.VK_LEFT - 0x25] && !this.keys[KeyEvent.VK_RIGHT - 0x25]) {
             this.slime.getVector().setX(-4);
-        } else if(!this.keys[KeyEvent.VK_LEFT - 0x25] && this.keys[KeyEvent.VK_RIGHT - 0x25]) {
+        } else if (!this.keys[KeyEvent.VK_LEFT - 0x25] && this.keys[KeyEvent.VK_RIGHT - 0x25]) {
             this.slime.getVector().setX(4);
         } else {
             this.slime.getVector().setX(0);
         }
-        if(this.keys[KeyEvent.VK_UP - 0x25] && Math.abs(this.slime.getYCoord() - Board.SLIME_FLOOR) < 0.01) {     // springen nur erlauben, wenn slime am boden
+        if (this.keys[KeyEvent.VK_UP - 0x25] && Math.abs(this.slime.getYCoord() - Board.SLIME_FLOOR) < 0.01) {     // springen nur erlauben, wenn slime am boden
             this.slime.getVector().setY(-6);
         }
     }

@@ -248,7 +248,7 @@ public class ServerWorker extends TimerTask {
     private void checkGoal() throws IOException {
         // Ball muss > 50% im Tor sein
         if (this.ball.getMiddleX() < this.p1.goal.getXCoord() + this.p1.goal.getWidth() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p1.goal.getHeight()) {
-            this.p1.setGoalCounter(this.p1.getGoalCounter() + 1);
+            this.p1.goals++;
 
             this.p1.dos.writeByte(Constants.TYPE_GOAL);
             this.p1.dos.writeBoolean(true);                 // eigenes tor
@@ -257,7 +257,7 @@ public class ServerWorker extends TimerTask {
 
             this.resetBall();
         } else if (this.ball.getMiddleX() > this.p2.goal.getXCoord() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p2.goal.getHeight()) {
-            this.p2.setGoalCounter(this.p2.getGoalCounter() + 1);
+            this.p2.goals++;
 
             this.p2.dos.writeByte(Constants.TYPE_GOAL);
             this.p2.dos.writeBoolean(true);                 // eigenes tor
