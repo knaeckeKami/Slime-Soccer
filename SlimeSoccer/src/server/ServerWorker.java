@@ -92,7 +92,6 @@ public class ServerWorker extends TimerTask {
                 // wenn ball langsam is, und in bodennähe => leg ihn ruhig am boden ^^
                 // perfekten werte sollt ma durch ausprobieren finden ^^
                 if (Math.abs(this.ball.getVector().getY()) < 3 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
-                    System.out.println("Hinlegen:" + ball.getVector().getY());
                     this.ball.setYCoord(Board.BALL_FLOOR);
                     this.ball.getVector().setY(0);
                     this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
@@ -265,6 +264,20 @@ public class ServerWorker extends TimerTask {
             this.p1.dos.writeBoolean(false);                // gegnerisches tor
 
             this.resetBall();
+        }
+
+        if (this.p1.goals == Constants.GOALS_REQUIRED) {
+            this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p1.dos.writeBoolean(true);
+            this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p2.dos.writeBoolean(false);
+            this.cancel();      // spiel beendet
+        } else if (this.p2.goals == Constants.GOALS_REQUIRED) {
+            this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p1.dos.writeBoolean(false);
+            this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p2.dos.writeBoolean(true);
+            this.cancel();      // spiel beendet
         }
     }
 

@@ -142,9 +142,9 @@ public class Player {
 
     public void update() {
         if (this.keys[KeyEvent.VK_LEFT - 0x25] && !this.keys[KeyEvent.VK_RIGHT - 0x25]) {
-            this.slime.getVector().setX(-4);
+            this.slime.getVector().setX(-7);
         } else if (!this.keys[KeyEvent.VK_LEFT - 0x25] && this.keys[KeyEvent.VK_RIGHT - 0x25]) {
-            this.slime.getVector().setX(4);
+            this.slime.getVector().setX(7);
         } else {
             this.slime.getVector().setX(0);
         }

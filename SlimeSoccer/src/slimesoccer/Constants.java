@@ -1,7 +1,7 @@
 package slimesoccer;
 
 /**
- *
+ * @todo mehr konstanten in diese datei tun, übersichtlichkeit und so ^^
  * @author TicTacMoe
  */
 public interface Constants {
@@ -27,9 +27,12 @@ public interface Constants {
      * sowie boolean (true=pressed, false=released)
      */
     public static final char TYPE_KEY = 'k';
-    
     /**
      * w gefolgt von boolean (true=spieler, false=gegner);
      */
     public static final char TYPE_GAME_WIN = 'w';
+    /**
+     * Anzahl der benötigten Tore für einen Sieg
+     */
+    public static final int GOALS_REQUIRED = 5;
 }

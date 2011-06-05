@@ -7,10 +7,8 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import javax.swing.JOptionPane;
@@ -18,8 +16,7 @@ import javax.swing.JPanel;
 
 /**
  *
- * @todo goal, slime, name, etc in Player-Objekt auslagern! (übersichtlichkeit und so ^^) aber nur wenn speed dadurch nicht beeinflusst wird
- * 
+ * @todo FPS anzeige wär cool :D
  * @author 3BHDV - Timo Hinterleitner
  * @author 3BHDV - Martin Kamleithner
  */
@@ -162,9 +159,9 @@ public class Board extends JPanel {
                             break;
                         case Constants.TYPE_GAME_WIN:
                             if (din.readBoolean()) {
-                                JOptionPane.showMessageDialog(Board.this, "Sie haben Gewonnen!");
+                                JOptionPane.showMessageDialog(Board.this, "Sie haben gewonnen!\n" + ownPlayer.goals + ":" + enemyPlayer.goals);
                             } else {
-                                JOptionPane.showMessageDialog(Board.this, "Sie haben verloren!");
+                                JOptionPane.showMessageDialog(Board.this, "Sie haben verloren!\n" + ownPlayer.goals + ":" + enemyPlayer.goals);
                             }
                             gameRunning = false;
                             break;
