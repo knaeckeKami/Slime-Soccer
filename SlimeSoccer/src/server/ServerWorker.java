@@ -222,10 +222,17 @@ public class ServerWorker extends TimerTask {
         //System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
         //Wenn sich Ball nicht bewegt, und der Slime berührt den Ball -> Division durch null und so^^
         //Ich hab in diesem Fall den Ballvektor auf den Slimevektor gesetzt.
+        System.out.println("Ball: " +ball.toString());
+        System.out.println("Slime: "+ collisionSlime.toString());
         if (ball.getVector().squarelength() == 0) {
             ball.getVector().setXY(collisionSlime.getVector().getX(), collisionSlime.getVector().getY());
             return;
         }
+        /*//Wenn der Ball genau von oben kommt, funktioniert der Pythagoras nicht.
+        if(Math.abs(ball.getMiddleX()-collisionSlime.getMiddleX())<3&& this.ball.getVector().getX()<2){
+            ball.getVector().changeYDir();
+            return;
+        } */
 
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_DIAGONALE);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
@@ -254,7 +261,8 @@ public class ServerWorker extends TimerTask {
             this.p2.dos.writeByte(Constants.TYPE_GOAL);
             this.p2.dos.writeBoolean(false);                // gegnerisches tor
 
-            this.resetBall();
+           resetPositions();
+            
         } else if (this.ball.getMiddleX() > this.p2.goal.getXCoord() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p2.goal.getHeight()) {
             this.p2.goals++;
 
@@ -263,20 +271,20 @@ public class ServerWorker extends TimerTask {
             this.p1.dos.writeByte(Constants.TYPE_GOAL);
             this.p1.dos.writeBoolean(false);                // gegnerisches tor
 
-            this.resetBall();
+            resetPositions();
         }
 
         if (this.p1.goals == Constants.GOALS_REQUIRED) {
             this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
-            this.p1.dos.writeBoolean(true);
-            this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
-            this.p2.dos.writeBoolean(false);
-            this.cancel();      // spiel beendet
-        } else if (this.p2.goals == Constants.GOALS_REQUIRED) {
-            this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
             this.p1.dos.writeBoolean(false);
             this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
             this.p2.dos.writeBoolean(true);
+            this.cancel();      // spiel beendet
+        } else if (this.p2.goals == Constants.GOALS_REQUIRED) {
+            this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p1.dos.writeBoolean(true);
+            this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p2.dos.writeBoolean(false);
             this.cancel();      // spiel beendet
         }
     }
@@ -289,11 +297,11 @@ public class ServerWorker extends TimerTask {
 
     private void writeCoords(Player p) throws IOException {
         p.dos.writeByte(Constants.TYPE_COORDS);
-
+        
         // x,y vom Ball
         p.dos.writeInt((int) this.ball.getXCoord());
         p.dos.writeInt((int) this.ball.getYCoord());
-
+        
         // x,y vom eigenen Spieler
         p.dos.writeInt((int) p.slime.getXCoord());
         p.dos.writeInt((int) p.slime.getYCoord());
@@ -301,5 +309,11 @@ public class ServerWorker extends TimerTask {
         // x,y vom anderen Spieler
         p.dos.writeInt((int) p.enemy.slime.getXCoord());
         p.dos.writeInt((int) p.enemy.slime.getYCoord());
+    }
+    
+    private void resetPositions(){
+            this.resetBall();
+            this.p1.resetSlimePosition();
+            this.p2.resetSlimePosition();
     }
 }
