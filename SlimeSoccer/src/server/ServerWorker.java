@@ -171,7 +171,7 @@ public class ServerWorker extends TimerTask {
 
         // Kollision von Ball mit "Himmel" oder Boden
         if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.BALL_FLOOR) {
-            this.ball.getVector().changeYDir().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
+            this.ball.getVector().changeYDir();
         }
 
         // Kollision von Ball mit Torlatte links
