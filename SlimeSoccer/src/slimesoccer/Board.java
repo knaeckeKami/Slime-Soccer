@@ -201,6 +201,7 @@ public class Board extends JPanel {
 
                 } catch (IOException ex) {
                     System.err.println("Fehler GameLoop: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(Board.this, ex.getMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
                     this.gameRunning = false;            // weil nach IO Error kein sinnvolles spielen mehr möglich ist
                 }
             }

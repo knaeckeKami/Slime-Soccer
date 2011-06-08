@@ -91,8 +91,9 @@ public class Vector2D {
      * Negiert den x-Wert des Vektors
      * x = -x
      */
-    public void changeXDir() {
+    public Vector2D changeXDir() {
         this.x = -this.x;
+        return this;
     }
 
     /**
@@ -109,8 +110,9 @@ public class Vector2D {
      * Negiert den y-Wert des Vektors
      * y = -y
      */
-    public void changeYDir() {
+    public Vector2D changeYDir() {
         this.y = -this.y;
+        return this;
     }
 
     /**
@@ -133,16 +135,18 @@ public class Vector2D {
      * Setzt den x-Wert des Vektors
      * @param x neuer x-Wert
      */
-    public void setX(double x) {
+    public Vector2D setX(double x) {
         this.x = x;
+        return this;
     }
 
     /**
      * Setzt den y-Wert des Vektors
      * @param y neuer y-Wert
      */
-    public void setY(double y) {
+    public Vector2D setY(double y) {
         this.y = y;
+        return this;
     }
 
     public double scalarProduct(Vector2D v2) {
@@ -154,9 +158,10 @@ public class Vector2D {
      * @param x neuer x-Wert
      * @param y neuer y-Wert
      */
-    public void setXY(double x, double y) {
+    public Vector2D setXY(double x, double y) {
         this.x = x;
         this.y = y;
+        return this;
     }
 
     /**
