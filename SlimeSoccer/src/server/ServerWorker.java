@@ -169,17 +169,34 @@ public class ServerWorker extends TimerTask {
             this.ball.getVector().changeXDir();
         }
 
-        // Kollision von Ball mit "Himmel" oder Boden
-        if (this.ball.getYCoord() <= 0 || this.ball.getYCoord() >= Board.BALL_FLOOR) {
+        //Kollision von Ball mit Boden
+        if(this.ball.getYCoord() >= Board.BALL_FLOOR){
+            this.ball.getVector().setY(Math.abs(this.ball.getVector().getY())*-1);
+        }
+
+        // Kollision von Ball mit "Himmel" 
+        if (this.ball.getYCoord() <= 0 ) {
             this.ball.getVector().changeYDir();
         }
 
         // Kollision von Ball mit Torlatte links
+        Vector2D leftGoalBallVector = new Vector2D(this.p1.goal.getXCoord() + p1.goal.getWidth() - ball.getMiddleX(), this.p1.goal.getYCoord() - ball.getMiddleY());
+        if (this.ball.getMiddleX()>=this.p1.goal.getWidth()&&leftGoalBallVector.squarelength() < Ball.BALL_RADIUS * Ball.BALL_RADIUS) {
+            ball.getVector().changeXDir();
+        }
         if (this.ball.getMiddleX() <= this.p1.goal.getXCoord() + this.p1.goal.getWidth() && Math.abs((this.p1.goal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS / 2) {
             this.ball.getVector().changeYDir();
         } //Kollison von Ball mit Torstange rechts
-        else if (this.ball.getMiddleX() >= this.p2.goal.getXCoord() && Math.abs((this.p2.goal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS / 2) {
-            this.ball.getVector().changeYDir();
+        else {
+
+            Vector2D rightGoalBallVector = new Vector2D(p2.goal.getXCoord() - ball.getMiddleX(), p2.goal.getYCoord() - ball.getMiddleY());
+            if (ball.getMiddleX()< p2.goal.getXCoord()&&rightGoalBallVector.squarelength() < Ball.BALL_RADIUS * Ball.BALL_RADIUS) {
+                ball.getVector().changeXDir();
+            }
+
+            if (this.ball.getMiddleX() >= this.p2.goal.getXCoord() && Math.abs((this.p2.goal.getYCoord() - this.ball.getMiddleY())) < Ball.BALL_RADIUS / 2) {
+                this.ball.getVector().changeYDir();
+            }
         }
 
         // deine version ------------------------------------------------------------------------------------
@@ -231,19 +248,12 @@ public class ServerWorker extends TimerTask {
             ball.getVector().setXY(collisionSlime.getVector().getX(), collisionSlime.getVector().getY());
             return;
         }
-
-  
-
         //Wenn der Ball genau von oben kommt, funktioniert der Pythagoras nicht.
-        if(Math.abs(ball.getMiddleX()-collisionSlime.getMiddleX())<3&& this.ball.getVector().getX()<2){
+        if (Math.abs(ball.getMiddleX() - collisionSlime.getMiddleX()) < 3 && this.ball.getVector().getX() < 2) {
 
             ball.getVector().changeYDir();
             return;
-
         }
-
-        
-
 
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_DIAGONALE);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
@@ -343,7 +353,7 @@ public class ServerWorker extends TimerTask {
                 this.resetPositions();
             }
 
-        }else {
+        } else {
             this.p2.framesInOwnGoal = 0;
         }
 

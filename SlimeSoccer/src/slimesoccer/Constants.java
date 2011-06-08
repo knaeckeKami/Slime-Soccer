@@ -39,7 +39,7 @@ public interface Constants {
     /**
      * Die Anzahl der Frames, die ein Slime innerhalb des eigenen Tores sein darf
      */
-    public static final int ALLOWED_FRAMES_IN_OWN_GOAL=50;
+    public static final int ALLOWED_FRAMES_IN_OWN_GOAL=100;
 
     /**
      * Die Seite, auf der der Spieler spielt

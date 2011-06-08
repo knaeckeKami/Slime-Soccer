@@ -89,7 +89,7 @@ public class Board extends JPanel {
         g.setColor(Color.BLACK);
         //Font.decode = Performancekiller
         g.setFont(Board.GOAL_FONT);
-        if (!rightSide) {
+        if (rightSide) {
             g.drawString(Integer.toString(this.ownPlayer.goals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
             g.drawString(Integer.toString(this.enemyPlayer.goals), 50, Board.GOAL_DISPLAY_HEIGHT);
         } else {
