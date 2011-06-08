@@ -39,11 +39,11 @@ public class Player {
 
         switch (number) {
             case 1:
-                this.slime = new Slime(Board.WIDTH / 4, Board.SLIME_FLOOR);
+                this.slime = new Slime(client.Client.BOARD_WIDTH / 4, Board.SLIME_FLOOR);
                 this.slime.setColor(Color.WHITE);
                 break;
             case 2:
-                this.slime = new Slime(Board.WIDTH / 4 * 3, Board.SLIME_FLOOR);
+                this.slime = new Slime(client.Client.BOARD_WIDTH / 4 * 3, Board.SLIME_FLOOR);
                 this.slime.setColor(Color.GREEN);
             default:
                 break;
@@ -151,5 +151,15 @@ public class Player {
         if (this.keys[KeyEvent.VK_UP - 0x25] && Math.abs(this.slime.getYCoord() - Board.SLIME_FLOOR) < 0.01) {     // springen nur erlauben, wenn slime am boden
             this.slime.getVector().setY(-6);
         }
+    }
+
+    public void resetSlimePosition() {
+        if (this.number == 1) {
+            this.slime.x = client.Client.BOARD_WIDTH / 4;
+        } else {
+            this.slime.x = client.Client.BOARD_WIDTH / 4 * 3;
+        }
+        this.slime.y = Board.SLIME_FLOOR;
+        this.slime.vector.setXY(0, 0);
     }
 }

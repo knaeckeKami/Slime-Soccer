@@ -222,8 +222,6 @@ public class ServerWorker extends TimerTask {
         //System.out.println("reflect ball! vektor vorher: " +ball.getVector() );
         //Wenn sich Ball nicht bewegt, und der Slime berührt den Ball -> Division durch null und so^^
         //Ich hab in diesem Fall den Ballvektor auf den Slimevektor gesetzt.
-        System.out.println("Ball: " +ball.toString());
-        System.out.println("Slime: "+ collisionSlime.toString());
         if (ball.getVector().squarelength() == 0) {
             ball.getVector().setXY(collisionSlime.getVector().getX(), collisionSlime.getVector().getY());
             return;
