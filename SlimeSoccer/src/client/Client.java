@@ -39,6 +39,7 @@ public class Client extends JFrame {
         }
         try {
             this.server = new Socket(this.serverIP, this.serverPort);
+            this.server.setTcpNoDelay(true);
             this.addKeyListener(new ArrowKeyListener(new DataOutputStream(this.server.getOutputStream())));
         } catch (IOException ex) {
             System.err.println(ex);

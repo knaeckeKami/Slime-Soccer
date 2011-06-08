@@ -226,11 +226,11 @@ public class ServerWorker extends TimerTask {
             ball.getVector().setXY(collisionSlime.getVector().getX(), collisionSlime.getVector().getY());
             return;
         }
-        /*//Wenn der Ball genau von oben kommt, funktioniert der Pythagoras nicht.
+        //Wenn der Ball genau von oben kommt, funktioniert der Pythagoras nicht.
         if(Math.abs(ball.getMiddleX()-collisionSlime.getMiddleX())<3&& this.ball.getVector().getX()<2){
             ball.getVector().changeYDir();
             return;
-        } */
+        } 
 
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_DIAGONALE);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
