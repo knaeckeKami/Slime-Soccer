@@ -27,6 +27,9 @@ public class Board extends JPanel {
     // anscheinend zeichnet der in GANZEN kreis, bzw legt zumindest des rechteck so drüber als wärs a ganzer.. FAIL
     public static final int BALL_FLOOR = (int) (Board.FLOOR - Ball.BALL_DIAGONALE);
     public static final int GOAL_DISPLAY_HEIGHT = 40;
+    public static final int FPS_DISPLAY_HEIGHT = 30;
+    public static final Font GOAL_FONT = Font.decode("COURIER NEW-PLAIN-36");
+    public static final Font FPS_FONT = Font.decode("COURIER NEW-PLAIN-24");
     private Ball ball;
     private Player ownPlayer;
     private Player enemyPlayer;
@@ -85,15 +88,20 @@ public class Board extends JPanel {
         //Toranzahl zeichnen
         g.setColor(Color.BLACK);
         //Font.decode = Performancekiller
-        g.setFont(Font.decode("GoalString-COURIER_NEW-36"));
+        g.setFont(Board.GOAL_FONT);
         if (!rightSide) {
-
             g.drawString(Integer.toString(this.ownPlayer.goals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
             g.drawString(Integer.toString(this.enemyPlayer.goals), 50, Board.GOAL_DISPLAY_HEIGHT);
         } else {
             g.drawString(Integer.toString(this.ownPlayer.goals), 50, Board.GOAL_DISPLAY_HEIGHT);
             g.drawString(Integer.toString(this.enemyPlayer.goals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
         }
+
+        long timediff = System.currentTimeMillis() - oldtime;
+        g.setColor(Color.WHITE);
+        g.setFont(Board.FPS_FONT);
+        g.drawString(1000 / timediff + " fps", client.Client.BOARD_WIDTH / 2 - 10, Board.FPS_DISPLAY_HEIGHT);
+        this.oldtime = System.currentTimeMillis();
     }
 
     /**
