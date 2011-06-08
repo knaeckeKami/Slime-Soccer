@@ -39,8 +39,13 @@ public class ServerWorker extends TimerTask {
         // Sending names of competitors
         this.p1.dos.writeByte(Constants.TYPE_NAME);
         this.p1.dos.writeBytes(this.p1.name + "\n");
+        //Sending Side
+        this.p1.dos.writeByte(Constants.TYPE_SIDE);
+        this.p1.dos.writeByte('l');
         this.p2.dos.writeByte(Constants.TYPE_NAME);
         this.p2.dos.writeBytes(this.p2.name + "\n");
+        this.p2.dos.writeByte(Constants.TYPE_SIDE);
+        this.p2.dos.writeByte('r');
 
         // Sending initial coordinates
         this.writeCoords(this.p1);
@@ -82,7 +87,7 @@ public class ServerWorker extends TimerTask {
 
             this.checkGoal();
             this.checkCollisions();
-
+            this.checkGoalHanging();
             // handle gravity
             if (this.ball.getYCoord() < Board.BALL_FLOOR) {
                 this.ball.getVector().add(Vector2D.GRAVITY);
@@ -226,11 +231,19 @@ public class ServerWorker extends TimerTask {
             ball.getVector().setXY(collisionSlime.getVector().getX(), collisionSlime.getVector().getY());
             return;
         }
+
+  
+
         //Wenn der Ball genau von oben kommt, funktioniert der Pythagoras nicht.
         if(Math.abs(ball.getMiddleX()-collisionSlime.getMiddleX())<3&& this.ball.getVector().getX()<2){
+
             ball.getVector().changeYDir();
             return;
-        } 
+
+        }
+
+        
+
 
         Vector2D r = slimeToBall.einheitsVector().multiply(Slime.SLIME_DIAGONALE);
         double L = Math.abs(this.ball.getVector().scalarProduct(r) / this.ball.getVector().length());
@@ -252,37 +265,33 @@ public class ServerWorker extends TimerTask {
     private void checkGoal() throws IOException {
         // Ball muss > 50% im Tor sein
         if (this.ball.getMiddleX() < this.p1.goal.getXCoord() + this.p1.goal.getWidth() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p1.goal.getHeight()) {
-            this.p1.goals++;
+            /*this.p1.goals++;
 
             this.p1.dos.writeByte(Constants.TYPE_GOAL);
             this.p1.dos.writeBoolean(true);                 // eigenes tor
             this.p2.dos.writeByte(Constants.TYPE_GOAL);
-            this.p2.dos.writeBoolean(false);                // gegnerisches tor
+            this.p2.dos.writeBoolean(false);                // gegnerisches tor*/
+            addGoal(p1, p2);
 
-           resetPositions();
-            
+            resetPositions();
+
         } else if (this.ball.getMiddleX() > this.p2.goal.getXCoord() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p2.goal.getHeight()) {
-            this.p2.goals++;
-
-            this.p2.dos.writeByte(Constants.TYPE_GOAL);
-            this.p2.dos.writeBoolean(true);                 // eigenes tor
-            this.p1.dos.writeByte(Constants.TYPE_GOAL);
-            this.p1.dos.writeBoolean(false);                // gegnerisches tor
+            addGoal(p2, p1);
 
             resetPositions();
         }
 
         if (this.p1.goals == Constants.GOALS_REQUIRED) {
             this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
-            this.p1.dos.writeBoolean(false);
-            this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
-            this.p2.dos.writeBoolean(true);
-            this.cancel();      // spiel beendet
-        } else if (this.p2.goals == Constants.GOALS_REQUIRED) {
-            this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
             this.p1.dos.writeBoolean(true);
             this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
             this.p2.dos.writeBoolean(false);
+            this.cancel();      // spiel beendet
+        } else if (this.p2.goals == Constants.GOALS_REQUIRED) {
+            this.p1.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p1.dos.writeBoolean(false);
+            this.p2.dos.writeByte(Constants.TYPE_GAME_WIN);
+            this.p2.dos.writeBoolean(true);
             this.cancel();      // spiel beendet
         }
     }
@@ -295,11 +304,11 @@ public class ServerWorker extends TimerTask {
 
     private void writeCoords(Player p) throws IOException {
         p.dos.writeByte(Constants.TYPE_COORDS);
-        
+
         // x,y vom Ball
         p.dos.writeInt((int) this.ball.getXCoord());
         p.dos.writeInt((int) this.ball.getYCoord());
-        
+
         // x,y vom eigenen Spieler
         p.dos.writeInt((int) p.slime.getXCoord());
         p.dos.writeInt((int) p.slime.getYCoord());
@@ -308,10 +317,44 @@ public class ServerWorker extends TimerTask {
         p.dos.writeInt((int) p.enemy.slime.getXCoord());
         p.dos.writeInt((int) p.enemy.slime.getYCoord());
     }
-    
-    private void resetPositions(){
-            this.resetBall();
-            this.p1.resetSlimePosition();
-            this.p2.resetSlimePosition();
+
+    private void resetPositions() {
+        this.resetBall();
+        this.p1.resetSlimePosition();
+        this.p2.resetSlimePosition();
+    }
+
+    private void checkGoalHanging() throws IOException {
+        if (this.p1.slime.getMiddleX() < p1.goal.getXCoord() + this.p1.goal.getWidth()) {
+            this.p1.framesInOwnGoal++;
+            if (p1.framesInOwnGoal > Constants.ALLOWED_FRAMES_IN_OWN_GOAL) {
+                addGoal(p2, p1);
+                this.resetPositions();
+            }
+        } else {
+            this.p1.framesInOwnGoal = 0;
+        }
+
+        if (p2.slime.getMiddleX() > p2.getGoal().getXCoord() - this.p2.getGoal().getWidth()) {
+            this.p2.framesInOwnGoal++;
+
+            if (p2.framesInOwnGoal > Constants.ALLOWED_FRAMES_IN_OWN_GOAL) {
+                addGoal(p1, p2);
+                this.resetPositions();
+            }
+
+        }else {
+            this.p2.framesInOwnGoal = 0;
+        }
+
+    }
+
+    private void addGoal(Player goalPlayer, Player otherPlayer) throws IOException {
+        goalPlayer.goals++;
+
+        goalPlayer.dos.writeByte(Constants.TYPE_GOAL);
+        goalPlayer.dos.writeBoolean(true);                 // eigenes tor
+        otherPlayer.dos.writeByte(Constants.TYPE_GOAL);
+        otherPlayer.dos.writeBoolean(false);                // gegnerisches tor
     }
 }

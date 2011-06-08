@@ -29,6 +29,7 @@ public class Player {
     public Player enemy;
     public int goals;
     public boolean[] keys = new boolean[3];
+    public int framesInOwnGoal;
 
     public Player(int number, Socket socket) throws IOException {
         this.number = number;

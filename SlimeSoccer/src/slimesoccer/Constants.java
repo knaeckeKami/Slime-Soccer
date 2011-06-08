@@ -35,4 +35,15 @@ public interface Constants {
      * Anzahl der benötigten Tore für einen Sieg
      */
     public static final int GOALS_REQUIRED = 5;
+
+    /**
+     * Die Anzahl der Frames, die ein Slime innerhalb des eigenen Tores sein darf
+     */
+    public static final int ALLOWED_FRAMES_IN_OWN_GOAL=50;
+
+    /**
+     * Die Seite, auf der der Spieler spielt
+     * s gefolgt von l=left, r=right
+     */
+    public static final int TYPE_SIDE='s';
 }

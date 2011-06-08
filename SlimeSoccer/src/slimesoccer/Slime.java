@@ -22,6 +22,8 @@ public class Slime extends MoveAble {
     //Die Farbe des Slimes.
     private Color color;
 
+
+
     /**
      * Erzeugt einen Slime mit 0,0 und einen Nullvektor.
      */
