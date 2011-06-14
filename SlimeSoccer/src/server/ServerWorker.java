@@ -87,18 +87,18 @@ public class ServerWorker extends TimerTask {
 
             // handle gravity
             if (this.ball.getYCoord() <= Board.BALL_FLOOR) {
-                this.ball.getVector().add(Vector2D.GRAVITY);
-                this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_AIR);
+                this.ball.getVector().add(Constants.GRAVITY);
+                this.ball.getVector().multiply(Constants.FRICTION_FACTOR_AIR);
             } else if (Math.abs(this.ball.getVector().getY()) < 3 && Math.abs(this.ball.getYCoord() - Board.BALL_FLOOR) < 0.5) {
                 // if ball is slow in y-direction and near floor => apply friction and stop it from bouncing
                 this.ball.setYCoord(Board.BALL_FLOOR);
                 this.ball.getVector().setY(0);
-                this.ball.getVector().multiply(Vector2D.FRICTION_FACTOR_FLOOR);
+                this.ball.getVector().multiply(Constants.FRICTION_FACTOR_FLOOR);
             }
 
             // if slime above ground => apply gravity
             if (this.p1.slime.getYCoord() < Board.SLIME_FLOOR) {
-                this.p1.slime.getVector().add(Vector2D.GRAVITY);
+                this.p1.slime.getVector().add(Constants.GRAVITY);
             } else if (this.p1.slime.getYCoord() >= Board.SLIME_FLOOR) {    // if slime on or under floor => stop from falling and place back on ground
                 this.p1.slime.getVector().setY(0);
                 this.p1.slime.setYCoord(Board.SLIME_FLOOR);
@@ -106,7 +106,7 @@ public class ServerWorker extends TimerTask {
 
             // if slime above ground => apply gravity
             if (this.p2.slime.getYCoord() < Board.SLIME_FLOOR) {
-                this.p2.slime.getVector().add(Vector2D.GRAVITY);
+                this.p2.slime.getVector().add(Constants.GRAVITY);
             } else if (this.p2.slime.getYCoord() >= Board.SLIME_FLOOR) {    // if slime on or under floor => stop from falling and place back on ground
                 this.p2.slime.getVector().setY(0);
                 this.p2.slime.setYCoord(Board.SLIME_FLOOR);

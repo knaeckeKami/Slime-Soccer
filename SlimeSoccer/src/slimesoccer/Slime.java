@@ -4,10 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 /**
- * @TODO   richtige Dimension für Slime.SLIME_RADIUS finden
- * @TODO   verschiedene farben ^^
- * @author 3BHDV - Timo Hinterleitner
- * @author 3BHDV - Martin Kamleithner
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Slime extends MoveAble {
 
@@ -19,10 +18,10 @@ public class Slime extends MoveAble {
      * Der Radius des Slimes.
      */
     public static final float SLIME_RADIUS = SLIME_DIAGONALE / 2;
-    //Die Farbe des Slimes.
+    /**
+     * Die Farbe des Slimes.
+     */
     private Color color;
-
-
 
     /**
      * Erzeugt einen Slime mit 0,0 und einen Nullvektor.
@@ -72,16 +71,24 @@ public class Slime extends MoveAble {
         this.color = color;
     }
 
+    /**
+     * Zeichnet den Slime mit dem Graphics Objekt g, in der Farbe color
+     * @param g Graphics Objekt mit dem gezeichnet wird
+     */
     public void draw(Graphics g) {
         g.setColor(color);
         g.fillArc(Math.round(x), Math.round(y), Math.round(SLIME_DIAGONALE), Math.round(SLIME_DIAGONALE), 0, 180);
     }
 
+    /**
+     * Berechnet die neue Position des Slimes (nach der Bewegung)
+     * Verhindert auch ein verschwinden am Bildschirmrand
+     */
     @Override
     public void update() {
         super.update();
-        if (this.x < -Slime.SLIME_DIAGONALE) {
-            this.x = -Slime.SLIME_DIAGONALE;
+        if (this.x < 0) {
+            this.x = 0;
         } else if (this.x > Constants.BOARD_WIDTH - Slime.SLIME_DIAGONALE) {
             this.x = Constants.BOARD_WIDTH - Slime.SLIME_DIAGONALE;
         }

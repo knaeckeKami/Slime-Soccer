@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 /**
  *
- * @todo FPS anzeige wär cool :D
  * @author 3BHDV - Timo Hinterleitner
  * @author 3BHDV - Martin Kamleithner
  */
@@ -39,10 +38,10 @@ public class Board extends JPanel {
     }
 
     /**
-     * 
-     * @param width
-     * @param height
-     * @param din
+     * Erzeugt ein neues Board auf welchem das Spiel stattfindet.
+     * Auf dem Board werden alle Elemente (Slime, Goal, Ball) gezeichnet
+     * @param width Breite des Boards
+     * @param height Höhe des Boards
      */
     public Board(int width, int height) {
         super(true);    // enable double buffering
@@ -56,14 +55,23 @@ public class Board extends JPanel {
         this.ball = new Ball(Ball.BALL_DIAGONALE, Color.RED);
         this.setOpaque(true);
         this.setBackground(Color.DARK_GRAY);
-//        this.addKeyListener(new ArrowKeyListener(this.dout));
     }
 
+    /**
+     * Startet das Spiel mit der Verbindung din
+     * @param din InputStream zur Verbindung mit dem Server
+     */
     public void startGame(DataInputStream din) {
         this.ownPlayer.dis = din;
         new Game().start();
     }
 
+    /**
+     * Zeichnet Floor, Slimes, Ball, Tore, Toranzahl und Anzahl der Frames pro Sekunde
+     * Die optimale Frameanzahl wird durch den Server definiert und kann evtl durch langsame 
+     * Netzwerkverbindung oder seeeeeehr langsame CPU vom Optimum abweichen.
+     * @param g 
+     */
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -81,9 +89,8 @@ public class Board extends JPanel {
 
         //Toranzahl zeichnen
         g.setColor(Color.BLACK);
-        //Font.decode = Performancekiller
         g.setFont(Board.GOAL_FONT);
-        if (rightSide) {
+        if (this.rightSide) {
             g.drawString(Integer.toString(this.ownPlayer.goals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
             g.drawString(Integer.toString(this.enemyPlayer.goals), 50, Board.GOAL_DISPLAY_HEIGHT);
         } else {
@@ -91,7 +98,8 @@ public class Board extends JPanel {
             g.drawString(Integer.toString(this.enemyPlayer.goals), this.getWidth() - 50, Board.GOAL_DISPLAY_HEIGHT);
         }
 
-        long timediff = System.currentTimeMillis() - oldtime;
+        // FPS
+        long timediff = System.currentTimeMillis() - this.oldtime;  // Differenz in ms
         g.setColor(Color.WHITE);
         g.setFont(Board.FPS_FONT);
         g.drawString(1000 / timediff + " fps", Constants.BOARD_WIDTH / 2 - 10, Board.FPS_DISPLAY_HEIGHT);
@@ -100,7 +108,6 @@ public class Board extends JPanel {
 
     /**
      * Thread, der von din liest, die Daten interpretiert und Positonen, Spielstand etc aktualisiert.
-     * Noch komplett ungetestet!
      */
     class Game extends Thread {
 
@@ -121,20 +128,8 @@ public class Board extends JPanel {
                 try {
                     //Commandobyte lesen
                     serverCommand = din.readByte();
-//                    System.out.println("Debug:  readbyte " + serverCommand);
                     switch (serverCommand) {
                         case Constants.TYPE_COORDS:
-//                            System.out.println("Debug: Update Coords");
-                            /**
-                             * PROBLEM: 
-                             * Wie liest man jetzt am besten
-                             * Lösung:
-                             ***** http://download.oracle.com/javase/1.4.2/docs/api/java/nio/ByteBuffer.html
-                             ***** Nicht Blockende Byte-Buffer, die als Int-Buffer betrachtet werden können!
-                             ***** IST IMPLEMENTIERT, ABER NOCH UNGETESTET!!
-                             * 
-                            
-                             */
                             Board.this.ball.x = din.readInt();
                             Board.this.ball.y = din.readInt();
                             Board.this.ownPlayer.slime.x = din.readInt();
@@ -143,27 +138,6 @@ public class Board extends JPanel {
                             Board.this.enemyPlayer.slime.y = din.readInt();
                             Board.this.repaint();
                             break;
-//                            readBytes = din.read(positions);
-//                            System.out.println("Debug: readByte: " +readBytes);
-//                            if (readBytes != positonsSize) {
-//                                //I glaub es is besser, das Package wegzuschmeißen und das nächste zu lesen wenn was schiefgangen is
-//                                //Als dann extra Fehlerbehandlung zu machen was Zeit kostet und evtl Performance runterzieht
-//                                System.err.println("Fehlerhaftes Package! Gelesene bytes: " + readBytes + "Inhalt:" + Arrays.toString(positions));
-//                                continue;
-//                            }else{
-//                                //Zurücksetzen der LesePosition
-//                                intBuf.clear();
-//                                //Updaten der Positonen
-//                                ball.x=  intBuf.get();
-//                                ball.y=  intBuf.get();
-//                                player.x=intBuf.get();
-//                                player.y=intBuf.get();
-//                                enemy.x= intBuf.get();
-//                                enemy.y= intBuf.get();
-//                                Board.this.repaint();
-//                                break;
-//                            }
-
                         case Constants.TYPE_GOAL:
                             this.addGoal(din.readBoolean());
                             break;
@@ -176,7 +150,6 @@ public class Board extends JPanel {
                             gameRunning = false;
                             break;
                         case Constants.TYPE_SIDE:
-                            System.out.println("Debug: Side");
                             char side = (char) din.readByte();
                             if (side == 'r') {
                                 Board.this.rightSide = true;
@@ -185,8 +158,6 @@ public class Board extends JPanel {
                             } else {
                                 System.out.println("Connection Error: side: " + side);
                             }
-                            System.out.println("right side: " + rightSide);
-                            //Board.this.rightSide=din.readChar()=='r'?true:false;
                             break;
                         default:
                             if (serverCommand == -1) {
@@ -201,14 +172,16 @@ public class Board extends JPanel {
                 } catch (IOException ex) {
                     System.err.println("Fehler GameLoop: " + ex);
                     JOptionPane.showMessageDialog(Board.this, ex, "Connection error", JOptionPane.ERROR_MESSAGE);
-                    this.gameRunning = false;            // weil nach IO Error kein sinnvolles spielen mehr möglich ist
+                    this.gameRunning = false;            // weil nach IO Error kein (sinnvolles) spielen mehr möglich ist
                 }
             }
         }
 
+        /**
+         * Erhöht den Torcounter des eigenen bzw gegnerischen Spielers
+         * @param eigenerSpieler Gibt an ob der eigene Spieler ein Tor bekommen hat, oder der gegnerische
+         */
         private void addGoal(boolean eigenerSpieler) {
-            System.out.println("i am on the right side: " + rightSide);
-            System.out.println("i got goal: " + eigenerSpieler);
             if (eigenerSpieler) {
                 Board.this.ownPlayer.goals++;
             } else {

@@ -1,15 +1,13 @@
 package slimesoccer;
 
 /**
- *
- * @author edvo
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Vector2D {
 
-    private double x, y; //X is ume, Y is aufe
-    public static final Vector2D GRAVITY = new Vector2D(0.0, 0.35);
-    public static final double FRICTION_FACTOR_AIR = 0.995;
-    public static final double FRICTION_FACTOR_FLOOR = 0.7;
+    private double x, y;
 
     /**
      * Erzeugt einen neuen Vektor mit x und y auf 0.

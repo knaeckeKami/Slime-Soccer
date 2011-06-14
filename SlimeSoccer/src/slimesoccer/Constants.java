@@ -17,6 +17,18 @@ public interface Constants {
      */
     public static final int BOARD_HEIGHT = 500;
     /**
+     * Gravitationsvektor
+     */
+    public static final Vector2D GRAVITY = new Vector2D(0.0, 0.35);
+    /**
+     * Reibunskoeffizient in der Luft
+     */
+    public static final double FRICTION_FACTOR_AIR = 0.995;
+    /**
+     * Reibungskoeffizient am Boden
+     */
+    public static final double FRICTION_FACTOR_FLOOR = 0.7;
+    /**
      * g gefolgt von boolean (true=spieler, false=gegner)
      */
     public static final char TYPE_GOAL = 'g';
