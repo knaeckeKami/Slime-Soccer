@@ -82,7 +82,7 @@ public class Ball extends MoveAble {
 
     /**
      * Liefert X Koordinate des Mittelpunkts.
-     * @return 
+     * @return x Koordinate des Mittelpunkts
      */
     public float getMiddleX() {
         return x + Ball.BALL_RADIUS;
@@ -90,7 +90,7 @@ public class Ball extends MoveAble {
 
     /**
      * Liefert Y Koordinate des Mittelpunkts.
-     * @return 
+     * @return y Koordinate des Mittelpuntks
      */
     public float getMiddleY() {
         return y + Ball.BALL_RADIUS;

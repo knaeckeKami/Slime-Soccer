@@ -23,10 +23,10 @@ public class Goal extends MoveAble {
      */
     public Goal(boolean left) {
         if (left) {
-            this.img = new ImageIcon(this.getClass().getResource("../res/left.png")).getImage();
+            this.img = new ImageIcon(this.getClass().getResource("/res/left.png")).getImage();
             this.x = 0;
         } else {
-            this.img = new ImageIcon(this.getClass().getResource("../res/right.png")).getImage();
+            this.img = new ImageIcon(this.getClass().getResource("/res/right.png")).getImage();
             this.x = Constants.BOARD_WIDTH - this.img.getWidth(null);
         }
         this.height = img.getHeight(null);
