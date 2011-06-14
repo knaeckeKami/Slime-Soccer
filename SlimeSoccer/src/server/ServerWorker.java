@@ -36,10 +36,10 @@ public class ServerWorker extends TimerTask {
 
         //Sending Side
         this.p1.dos.writeByte(Constants.TYPE_SIDE);
-        this.p1.dos.writeByte('l');
+        this.p1.dos.writeByte('l'); //l für links
         
         this.p2.dos.writeByte(Constants.TYPE_SIDE);
-        this.p2.dos.writeByte('r');
+        this.p2.dos.writeByte('r'); // r für rechts
 
         // Sending initial coordinates
         this.writeCoords(this.p1);

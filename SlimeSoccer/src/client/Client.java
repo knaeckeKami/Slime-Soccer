@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.Socket;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import slimesoccer.ArrowKeyListener;
 import slimesoccer.Board;
 import slimesoccer.Constants;
@@ -29,7 +30,13 @@ public class Client extends JFrame {
     public Client() {
         super("SlimeSoccer!!");
         this.initComponents();
-
+        //Look'N' Feel des Systems verwenden
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            System.err.println("Look'N'Feel konnte nicht verwendet werden...");
+            //Keine Aktion notwendig, Standard Look'N'Feel wird verwendet
+        }
         this.serverIP = JOptionPane.showInputDialog(this.getRootPane(), "Please enter Server IP: ", "localhost");
         String port = JOptionPane.showInputDialog(this.getRootPane(), "Please enter Server Port: ", "1337");
         try {
