@@ -10,11 +10,9 @@ import slimesoccer.ArrowKeyListener;
 import slimesoccer.Board;
 
 /**
- * @TODO evtl JOptionPane erst anzeigen, wenn fenster geladen?
- * @TODO Initialisierungsdaten lesen (Ball und Spielerpositionen @link ServerWorker Zeile ~111)
- * 
- * @author 3BHDV - Timo Hinterleitner
- * @author 3BHDV - Martin Kamleithner
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Client extends JFrame {
 
@@ -25,6 +23,10 @@ public class Client extends JFrame {
     private Socket server;
     private Board board;
 
+    /**
+     * Fragt Server IP und Port ab und stellt eine Verbindung her
+     * Fügt auch einen ArrowKeyListener am JFrame hinzu
+     */
     public Client() {
         super("SlimeSoccer!!");
         this.initComponents();
@@ -53,6 +55,10 @@ public class Client extends JFrame {
         this.setSize(Client.BOARD_WIDTH+20, Client.BOARD_HEIGHT+50);
     }
 
+    /**
+     * Startet einen neuen Client und startet das Spiel
+     * @param args 
+     */
     public static void main(String... args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
@@ -62,7 +68,7 @@ public class Client extends JFrame {
                 try {
                     client.board.startGame(new DataInputStream(client.server.getInputStream()));
                 } catch (IOException ex) {
-                    System.out.println("Fehler startGame:" + ex.getMessage());
+                    System.out.println("Error startGame:" + ex.getMessage());
                 }
 
             }

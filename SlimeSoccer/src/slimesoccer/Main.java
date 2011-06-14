@@ -1,25 +1,25 @@
 package slimesoccer;
 
-import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 /**
- *
- * @author TicTacMoe
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Main {
 
     /**
-     * @param args the command line arguments
+     * Startet einen neuen SlimeSoccer Client
+     * Wird die Option -s beim start angegeben, wird anstantt des Clients ein Server gestartet
+     * Beim Server kann als weitere Option ein Port folgen
+     * @param args -s für Server, ansonsten wird ein Client gestartet
      */
     public static void main(String[] args) {
-        //diverse Tests
-        Vector2D v = new Vector2D(-1,1);
-        
-        System.out.println(v.squarelength());
-        
-        Ball b = new Ball(100, 100, 15);
-        b.vector = new Vector2D();
-        System.out.println("up:"+ KeyEvent.VK_UP+ "down:" +KeyEvent.VK_DOWN+ "right:" +KeyEvent.VK_RIGHT+ "left:"+ KeyEvent.VK_LEFT );
+        if (args.length >= 1 && "-s".equals(args[0])) {
+            server.Server.main(Arrays.copyOfRange(args, 1, args.length));
+        } else {
+            client.Client.main(Arrays.copyOfRange(args, 1, args.length));
+        }
     }
-
 }
