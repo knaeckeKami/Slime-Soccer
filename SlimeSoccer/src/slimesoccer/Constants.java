@@ -2,14 +2,20 @@ package slimesoccer;
 
 /**
  * @todo mehr konstanten in diese datei tun, übersichtlichkeit und so ^^
- * @author TicTacMoe
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public interface Constants {
 
     /**
-     * n gefolgt von gegnerischen Spielername (String)
+     * Breite des Spielfeldes
      */
-    public static final char TYPE_NAME = 'n';
+    public static final int BOARD_WIDTH = 800;
+    /**
+     * Höhe des Spielfeldes
+     */
+    public static final int BOARD_HEIGHT = 500;
     /**
      * g gefolgt von boolean (true=spieler, false=gegner)
      */
@@ -35,15 +41,13 @@ public interface Constants {
      * Anzahl der benötigten Tore für einen Sieg
      */
     public static final int GOALS_REQUIRED = 5;
-
     /**
      * Die Anzahl der Frames, die ein Slime innerhalb des eigenen Tores sein darf
      */
-    public static final int ALLOWED_FRAMES_IN_OWN_GOAL=100;
-
+    public static final int ALLOWED_FRAMES_IN_OWN_GOAL = 100;
     /**
      * Die Seite, auf der der Spieler spielt
      * s gefolgt von l=left, r=right
      */
-    public static final int TYPE_SIDE='s';
+    public static final int TYPE_SIDE = 's';
 }

@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import slimesoccer.ArrowKeyListener;
 import slimesoccer.Board;
+import slimesoccer.Constants;
 
 /**
  * Last modified: 14.06.2011
@@ -16,8 +17,6 @@ import slimesoccer.Board;
  */
 public class Client extends JFrame {
 
-    public static final int BOARD_WIDTH = 800;
-    public static final int BOARD_HEIGHT = 500;
     private String serverIP = "localhost";
     private int serverPort = 1337;
     private Socket server;
@@ -51,8 +50,8 @@ public class Client extends JFrame {
 
     private void initComponents() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.getContentPane().add(this.board = new Board(Client.BOARD_WIDTH, Client.BOARD_HEIGHT));
-        this.setSize(Client.BOARD_WIDTH+20, Client.BOARD_HEIGHT+50);
+        this.getContentPane().add(this.board = new Board(Constants.BOARD_WIDTH, Constants.BOARD_HEIGHT));
+        this.setSize(Constants.BOARD_WIDTH+20, Constants.BOARD_HEIGHT+50);
     }
 
     /**

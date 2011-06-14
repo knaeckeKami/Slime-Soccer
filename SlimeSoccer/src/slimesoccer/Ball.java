@@ -2,11 +2,11 @@ package slimesoccer;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.ImageObserver;
 
 /**
- *
- * @author edvo
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Ball extends MoveAble {
 
@@ -19,7 +19,7 @@ public class Ball extends MoveAble {
      */
     public static final float BALL_RADIUS = BALL_DIAGONALE / 2;
     private float radius;
-    private Color color;
+    private Color color = Color.RED;
 
     /**
      * Erzeugt einen neuen Ball, der auf (0/0) platziert ist und keine Bewegung
@@ -44,7 +44,7 @@ public class Ball extends MoveAble {
 
     /**
      * Erzeugt einen neuen Ball, der auf (x/y) platziert ist und keine Bewegung
-     * aufweist (Vector 0/0)
+     * aufweist (Vector 0/0). Der Radius wird durch radius definiert
      * @param x x-Koordinate des Balls
      * @param y y-Koordinate des Balls
      * @param radius Radius des Balls
@@ -54,21 +54,30 @@ public class Ball extends MoveAble {
         this.radius = radius > 0 ? radius : 1;
     }
 
+    /**
+     * Erzeugt einen neuen Ball, der auf (x/y) platziert ist und keine Bewegung
+     * aufweist (Vector 0/0). Der Radius wird durch radius definiert.
+     * Die Farbe wird auf color gesetzt.
+     * @param x x-Koordinate des Balls
+     * @param y y-Koordinate des Balls
+     * @param radius Radius des Balls
+     * @param color Farbe des Balls
+     */
     public Ball(int x, int y, float radius, Color color) {
         super(x, y);
         this.radius = radius > 0 ? radius : 1;
         this.color = color == null ? Color.RED : color;
     }
 
+    /**
+     * Zeichnet den Ball
+     * @param g Graphics Objekt mit dem gezeichnet werden soll
+     */
     public void draw(Graphics g) {
-        g.setColor(color);
-        int roundedRadius = Math.round(radius);
+        g.setColor(this.color);
+        int roundedRadius = Math.round(this.radius);
 
         g.fillArc(Math.round(x), Math.round(y), roundedRadius, roundedRadius, 0, 360);
-    }
-
-    public void draw(Graphics g, ImageObserver io) {
-        draw(g);
     }
 
     /**

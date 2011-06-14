@@ -82,8 +82,8 @@ public class Slime extends MoveAble {
         super.update();
         if (this.x < -Slime.SLIME_DIAGONALE) {
             this.x = -Slime.SLIME_DIAGONALE;
-        } else if (this.x > client.Client.BOARD_WIDTH - Slime.SLIME_DIAGONALE) {
-            this.x = client.Client.BOARD_WIDTH - Slime.SLIME_DIAGONALE;
+        } else if (this.x > Constants.BOARD_WIDTH - Slime.SLIME_DIAGONALE) {
+            this.x = Constants.BOARD_WIDTH - Slime.SLIME_DIAGONALE;
         }
     }
 

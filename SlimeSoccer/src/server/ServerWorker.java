@@ -1,6 +1,5 @@
 package server;
 
-import client.Client;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.TimerTask;
@@ -27,7 +26,7 @@ public class ServerWorker extends TimerTask {
      * @throws IOException bei IO Fehlern
      */
     public ServerWorker(Socket p1Socket, Socket p2Socket) throws IOException {
-        this.ball = new Ball(Client.BOARD_WIDTH / 2, Client.BOARD_HEIGHT / 2, Ball.BALL_DIAGONALE);
+        this.ball = new Ball(Constants.BOARD_WIDTH / 2, Constants.BOARD_HEIGHT / 2, Ball.BALL_DIAGONALE);
         this.p1 = new Player(1, p1Socket);
         this.p2 = new Player(2, p2Socket);
 
@@ -35,14 +34,10 @@ public class ServerWorker extends TimerTask {
         this.p2.enemy = this.p1;
 
 
-        // Sending names of competitors
-        this.p1.dos.writeByte(Constants.TYPE_NAME);
-        this.p1.dos.writeBytes(this.p1.name + "\n");
         //Sending Side
         this.p1.dos.writeByte(Constants.TYPE_SIDE);
         this.p1.dos.writeByte('l');
-        this.p2.dos.writeByte(Constants.TYPE_NAME);
-        this.p2.dos.writeBytes(this.p2.name + "\n");
+        
         this.p2.dos.writeByte(Constants.TYPE_SIDE);
         this.p2.dos.writeByte('r');
 
@@ -158,7 +153,7 @@ public class ServerWorker extends TimerTask {
         }
 
         // Kollision von Ball mit linker oder rechter Wand
-        if (this.ball.getXCoord() <= 0 || this.ball.getXCoord() >= Client.BOARD_WIDTH) {
+        if (this.ball.getXCoord() <= 0 || this.ball.getXCoord() >= Constants.BOARD_WIDTH) {
             this.ball.getVector().changeXDir();
         }
 
@@ -244,12 +239,12 @@ public class ServerWorker extends TimerTask {
      */
     private void checkGoal() throws IOException {
         // Ball muss > 50% im Tor sein
-        if (this.ball.getMiddleX() < this.p1.goal.getXCoord() + this.p1.goal.getWidth() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p1.goal.getHeight()) {
-            addGoal(this.p1);
+        if (this.ball.getMiddleX() < this.p1.goal.getXCoord() + this.p1.goal.getWidth() && this.ball.getMiddleY() > Constants.BOARD_HEIGHT - this.p1.goal.getHeight()) {
+            addGoal(this.p2);
             resetPositions();
 
-        } else if (this.ball.getMiddleX() > this.p2.goal.getXCoord() && this.ball.getMiddleY() > Client.BOARD_HEIGHT - this.p2.goal.getHeight()) {
-            addGoal(this.p2);
+        } else if (this.ball.getMiddleX() > this.p2.goal.getXCoord() && this.ball.getMiddleY() > Constants.BOARD_HEIGHT - this.p2.goal.getHeight()) {
+            addGoal(this.p1);
             resetPositions();
         }
 
@@ -310,8 +305,8 @@ public class ServerWorker extends TimerTask {
      * Setzt den Ball auf seine Ausgansposition (Mitte vom Spielfeld) zurück
      */
     private void resetBall() {
-        this.ball.setXCoord(Client.BOARD_WIDTH / 2);
-        this.ball.setYCoord(Client.BOARD_HEIGHT / 2);
+        this.ball.setXCoord(Constants.BOARD_WIDTH / 2);
+        this.ball.setYCoord(Constants.BOARD_HEIGHT / 2);
         this.ball.setVector(new Vector2D());
     }
 

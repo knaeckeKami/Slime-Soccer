@@ -21,7 +21,7 @@ public class Goal extends MoveAble {
             this.x = 0;
         } else {
             this.img = new ImageIcon(this.getClass().getResource("../res/right.png")).getImage();
-            this.x = client.Client.BOARD_WIDTH - this.img.getWidth(null);
+            this.x = Constants.BOARD_WIDTH - this.img.getWidth(null);
         }
         this.height = img.getHeight(null);
         this.width = img.getWidth(null);

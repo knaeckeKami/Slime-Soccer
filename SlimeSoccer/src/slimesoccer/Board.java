@@ -5,10 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import javax.swing.JOptionPane;
@@ -100,7 +98,7 @@ public class Board extends JPanel {
         long timediff = System.currentTimeMillis() - oldtime;
         g.setColor(Color.WHITE);
         g.setFont(Board.FPS_FONT);
-        g.drawString(1000 / timediff + " fps", client.Client.BOARD_WIDTH / 2 - 10, Board.FPS_DISPLAY_HEIGHT);
+        g.drawString(1000 / timediff + " fps", Constants.BOARD_WIDTH / 2 - 10, Board.FPS_DISPLAY_HEIGHT);
         this.oldtime = System.currentTimeMillis();
     }
 
@@ -126,7 +124,7 @@ public class Board extends JPanel {
 
                 try {
                     //Commandobyte lesen
-                    serverCommand = din.read();
+                    serverCommand = din.readByte();
 //                    System.out.println("Debug:  readbyte " + serverCommand);
                     switch (serverCommand) {
                         case Constants.TYPE_COORDS:
@@ -181,10 +179,6 @@ public class Board extends JPanel {
                             }
                             gameRunning = false;
                             break;
-                        case Constants.TYPE_NAME:
-                            System.out.println("Debug: reading names");
-                            Board.this.enemyPlayer.name = new BufferedReader(new InputStreamReader(din)).readLine();
-                            break;
                         case Constants.TYPE_SIDE:
                             System.out.println("Debug: Side");
                             char side = (char) din.readByte();
@@ -195,6 +189,7 @@ public class Board extends JPanel {
                             } else {
                                 System.out.println("Connection Error: side: " + side);
                             }
+                            System.out.println("right side: " + rightSide);
                             //Board.this.rightSide=din.readChar()=='r'?true:false;
                             break;
                         default:
@@ -216,6 +211,8 @@ public class Board extends JPanel {
         }
 
         private void addGoal(boolean eigenerSpieler) {
+            System.out.println("i am on the right side: " + rightSide);
+            System.out.println("i got goal: " + eigenerSpieler);
             if (eigenerSpieler) {
                 Board.this.ownPlayer.goals++;
             } else {

@@ -25,7 +25,6 @@ public class Player {
     public Socket socket;
     public DataInputStream dis;
     public DataOutputStream dos;
-    public String name;
     public Player enemy;
     public int goals;
     public boolean[] keys = new boolean[3];
@@ -35,16 +34,14 @@ public class Player {
         this.number = number;
         this.goal = new Goal(number == 1 ? true : false);
         this.socket = socket;
-        this.name = "Player " + number;
-        this.socket = socket;
 
         switch (number) {
             case 1:
-                this.slime = new Slime(client.Client.BOARD_WIDTH / 4, Board.SLIME_FLOOR);
+                this.slime = new Slime(Constants.BOARD_WIDTH / 4, Board.SLIME_FLOOR);
                 this.slime.setColor(Color.WHITE);
                 break;
             case 2:
-                this.slime = new Slime(client.Client.BOARD_WIDTH / 4 * 3, Board.SLIME_FLOOR);
+                this.slime = new Slime(Constants.BOARD_WIDTH / 4 * 3, Board.SLIME_FLOOR);
                 this.slime.setColor(Color.GREEN);
             default:
                 break;
@@ -85,14 +82,6 @@ public class Player {
 
     public void setGoal(Goal goal) {
         this.goal = goal;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Slime getSlime() {
@@ -141,6 +130,9 @@ public class Player {
         return this.keys[keycode - 0x25];
     }
 
+    /**
+     * Setzt die Bewegungsvektoren des Slimes, je nachdem welche Tasten gerade gedrückt sind.
+     */
     public void update() {
         if (this.keys[KeyEvent.VK_LEFT - 0x25] && !this.keys[KeyEvent.VK_RIGHT - 0x25]) {
             this.slime.getVector().setX(-7);
@@ -154,11 +146,14 @@ public class Player {
         }
     }
 
+    /**
+     * Setzt den Slime auf seine Ausgangsposition vor seinem Tor zurück
+     */
     public void resetSlimePosition() {
         if (this.number == 1) {
-            this.slime.x = client.Client.BOARD_WIDTH / 4;
+            this.slime.x = Constants.BOARD_WIDTH / 4;
         } else {
-            this.slime.x = client.Client.BOARD_WIDTH / 4 * 3;
+            this.slime.x = Constants.BOARD_WIDTH / 4 * 3;
         }
         this.slime.y = Board.SLIME_FLOOR;
         this.slime.vector.setXY(0, 0);
