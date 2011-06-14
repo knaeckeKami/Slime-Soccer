@@ -32,7 +32,7 @@ public class Client extends JFrame {
         this.initComponents();
         //Look'N' Feel des Systems verwenden
         try {
-            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             System.err.println("Look'N'Feel konnte nicht verwendet werden...");
             //Keine Aktion notwendig, Standard Look'N'Feel wird verwendet

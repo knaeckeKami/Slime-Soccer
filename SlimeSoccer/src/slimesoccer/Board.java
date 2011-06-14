@@ -79,10 +79,6 @@ public class Board extends JPanel {
         this.ownPlayer.goal.draw(g, this);
         this.enemyPlayer.goal.draw(g, this);
 
-        g.drawLine((int) (this.ownPlayer.slime.x + Slime.SLIME_DIAGONALE / 2), (int) (this.ownPlayer.slime.y + Slime.SLIME_DIAGONALE / 2), (int) (this.ball.x + Ball.BALL_DIAGONALE / 2), (int) (this.ball.y + Ball.BALL_DIAGONALE / 2));
-
-
-
         //Toranzahl zeichnen
         g.setColor(Color.BLACK);
         //Font.decode = Performancekiller
@@ -203,8 +199,8 @@ public class Board extends JPanel {
                     }
 
                 } catch (IOException ex) {
-                    System.err.println("Fehler GameLoop: " + ex.getMessage());
-                    JOptionPane.showMessageDialog(Board.this, ex.getMessage(), "Connection error", JOptionPane.ERROR_MESSAGE);
+                    System.err.println("Fehler GameLoop: " + ex);
+                    JOptionPane.showMessageDialog(Board.this, ex, "Connection error", JOptionPane.ERROR_MESSAGE);
                     this.gameRunning = false;            // weil nach IO Error kein sinnvolles spielen mehr möglich ist
                 }
             }
