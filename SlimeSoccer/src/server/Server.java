@@ -6,17 +6,23 @@ import java.net.Socket;
 import java.util.Timer;
 
 /**
- *
- * @author edvo
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Server {
 
     /**
-     *
-     * @param args
+     * Startet einenen neuen paralellen Server, der für jeweils 2 Spieler (Connections)
+     * ein SlimeSoccer-Game startet.
+     * Der Spieler, der sich zuerst verbindet, ist Player 1, der andere Player 2
+     * Standardmäßig wird der Server auf Port 1337 gestartet, durch Parameterübergabe beim Start
+     * kann dies allerdings geändert werden.
+     * Das Spiel wird mit 25 fps gespielt, eine geeignete Netzwerkverbindung muss dafür vorhanden sein.
+     * @param args 1. Parameter: Port
      */
     public static void main(String[] args) {
-        int fps = 25;        // just for debugging
+        int fps = 25;
         int port = 1337;
         boolean running = true;
         
