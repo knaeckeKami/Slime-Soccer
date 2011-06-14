@@ -6,8 +6,9 @@ import java.awt.image.ImageObserver;
 import javax.swing.ImageIcon;
 
 /**
- *
- * @author edvo
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Goal extends MoveAble {
 
@@ -15,6 +16,11 @@ public class Goal extends MoveAble {
     private int height;
     private int width;
 
+    /**
+     * Erzeugt ein neues Tor, welches abhängig von seiner Position (links oder rechts)
+     * ein anderes Aussehen (Image) erhält
+     * @param left Ist das Tor links? wenn false wird es als Tor am rechten Rand dargestellt
+     */
     public Goal(boolean left) {
         if (left) {
             this.img = new ImageIcon(this.getClass().getResource("../res/left.png")).getImage();
@@ -28,6 +34,11 @@ public class Goal extends MoveAble {
         this.y = Board.FLOOR - this.height;
     }
 
+    /**
+     * Zeichnet das Tor mit Hilfe des Graphics Objekts g und dem ImageObserver io
+     * @param g Graphics Objekt mit dem gezeichnet werden soll
+     * @param io ImageObserver für das Bild
+     */
     public void draw(Graphics g, ImageObserver io) {
         g.drawImage(this.img, Math.round(x), Math.round(y), io);
     }

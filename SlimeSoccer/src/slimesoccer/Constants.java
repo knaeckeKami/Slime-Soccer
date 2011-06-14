@@ -1,7 +1,6 @@
 package slimesoccer;
 
 /**
- * @todo mehr konstanten in diese datei tun, übersichtlichkeit und so ^^
  * Last modified: 14.06.2011
  * @author Timo Hinterleitner
  * @author Martin Kamleithner

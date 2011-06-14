@@ -1,8 +1,9 @@
 package slimesoccer;
 
 /**
- *
- * @author edvo
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public abstract class MoveAble implements Drawable {
 

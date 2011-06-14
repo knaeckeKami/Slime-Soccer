@@ -19,7 +19,7 @@ public class Main {
         if (args.length >= 1 && "-s".equals(args[0])) {
             server.Server.main(Arrays.copyOfRange(args, 1, args.length));
         } else {
-            client.Client.main(null);
+            client.Client.main("");
         }
     }
 }

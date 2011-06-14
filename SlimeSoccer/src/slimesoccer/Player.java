@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package slimesoccer;
 
 import java.awt.Color;
@@ -12,7 +8,9 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * @author dv20080204 - Timo Hinterleitner - 3BHDV
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public class Player {
 
@@ -27,11 +25,18 @@ public class Player {
     public DataOutputStream dos;
     public Player enemy;
     public int goals;
-    public boolean[] keys = new boolean[3];
+    public boolean[] keys = new boolean[3];     // gedrückte Tasten
     public int framesInOwnGoal;
 
+    /**
+     * Erzeugt einen neuen Player mit der Nummer number (1 oder 2) und der Verbindung
+     * zum Client socket
+     * @param number Nummer des Spielers
+     * @param socket Verbindung zum Client des Spielers
+     * @throws IOException bei IO Fehlern
+     */
     public Player(int number, Socket socket) throws IOException {
-        this.number = number;
+        this.number = (number == 1) ? 1: 2;
         this.goal = new Goal(number == 1 ? true : false);
         this.socket = socket;
 
@@ -116,7 +121,6 @@ public class Player {
      * @param pressed true wenn gedrückt, false wenn nicht
      */
     public void setKeystatus(int keycode, boolean pressed) {
-//        System.out.println("Debug: Player(" + number + ") set key status " + keycode + " to " + pressed);
         this.keys[keycode - 0x25] = pressed;    // 0x25 = offset zu VK_LEFT, VK_UP, VK_RIGHT
     }
 

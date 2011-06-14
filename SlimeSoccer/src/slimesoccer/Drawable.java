@@ -1,15 +1,12 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package slimesoccer;
 
 import java.awt.Graphics;
 
 /**
  *
- * @author edvo
+ * Last modified: 14.06.2011
+ * @author Timo Hinterleitner
+ * @author Martin Kamleithner
  */
 public interface Drawable {
 
