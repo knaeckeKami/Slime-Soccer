@@ -9,7 +9,10 @@ import java.awt.Graphics;
  * @author Martin Kamleithner
  */
 public interface Drawable {
-
+    /**
+     * Zeichnet die Komponente auf g
+     * @param g 
+     */
      void draw(Graphics g);
 
 }

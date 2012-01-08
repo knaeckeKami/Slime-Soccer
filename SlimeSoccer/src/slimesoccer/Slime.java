@@ -8,14 +8,14 @@ import java.awt.Graphics;
  * @author Timo Hinterleitner
  * @author Martin Kamleithner
  */
-public class Slime extends MoveAble {
+public class Slime extends Moveable {
 
     /**
-     * Die Diagonale, also der doppelte Radius, des Slimes.
+     * Die Standard Diagonale, also der doppelte Radius, des Slimes.
      */
     public static final float SLIME_DIAGONALE = 50;
     /**
-     * Der Radius des Slimes.
+     * Der Standard Radius des Slimes.
      */
     public static final float SLIME_RADIUS = SLIME_DIAGONALE / 2;
     /**

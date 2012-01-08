@@ -8,10 +8,10 @@ import java.awt.Graphics;
  * @author Timo Hinterleitner
  * @author Martin Kamleithner
  */
-public class Ball extends MoveAble {
+public class Ball extends Moveable {
 
     /**
-     * Die Standard-Diagonale, also der doppelte Radius, des Balls.
+     * Die Standard-Diagonale,  also der doppelte Radius, des Balls.
      */
     public static final float BALL_DIAGONALE = 25;
     /**

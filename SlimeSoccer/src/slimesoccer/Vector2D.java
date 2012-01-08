@@ -1,5 +1,6 @@
 package slimesoccer;
 
+
 /**
  * Last modified: 14.06.2011
  * @author Timo Hinterleitner
@@ -13,7 +14,9 @@ public class Vector2D {
      * Erzeugt einen neuen Vektor mit x und y auf 0.
      */
     public Vector2D() {
+        
     }
+   
 
     /**
      * Erzeugt einen neuen Vektor aus dem übergebenen (Kopie)

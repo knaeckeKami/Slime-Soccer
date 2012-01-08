@@ -17,7 +17,7 @@ public class ArrowKeyListener extends KeyAdapter {
 
     /**
      * Erzeugt einen neuen ArrowKeyListener der die Tastendrücke
-     * auf dout schreibt
+     * auf dout schreibt 
      * @param dout DataOutputStream auf den die Tastendrücke geschrieben werden sollen
      */
     public ArrowKeyListener(DataOutputStream dout) {
@@ -56,7 +56,7 @@ public class ArrowKeyListener extends KeyAdapter {
                 dout.writeByte(keycode);
                 dout.writeBoolean(pressed);
                 dout.flush();
-                this.keypressed[keycode-0x25] = pressed;
+                this.keypressed[keycode-0x25] = pressed; //0x25: Offest der VK_xxx Konstanten von 0
 
             } catch (IOException ex) {
                 System.err.println(ex.getMessage());

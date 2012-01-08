@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
  * @author Timo Hinterleitner
  * @author Martin Kamleithner
  */
-public class Goal extends MoveAble {
+public class Goal extends Moveable {
 
     private Image img;
     private int height;
@@ -38,6 +38,7 @@ public class Goal extends MoveAble {
      * Zeichnet das Tor mit Hilfe des Graphics Objekts g und dem ImageObserver io
      * @param g Graphics Objekt mit dem gezeichnet werden soll
      * @param io ImageObserver für das Bild
+     * 
      */
     public void draw(Graphics g, ImageObserver io) {
         g.drawImage(this.img, Math.round(x), Math.round(y), io);

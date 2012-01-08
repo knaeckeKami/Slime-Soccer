@@ -16,6 +16,7 @@ public class Player {
 
     /**
      * Variablen sind public um Zugriffe zu beschleunigen
+     * (premature optimation?)
      */
     public int number;
     public Slime slime;
